@@ -25,6 +25,7 @@ import com.jdk2010.framework.dal.client.DalClient;
 import com.jdk2010.framework.util.JsonUtil;
 import com.jdk2010.framework.util.ReturnData;
 import com.jdk2010.member.memberactivity.model.MemberActivity;
+import com.jdk2010.member.membercomplain.model.MemberComplain;
 import com.jdk2010.search.systemsearchword.model.SystemSearchword;
 import com.jdk2010.system.systemadv.model.SystemAdv;
 import com.jdk2010.system.systemadv.service.ISystemAdvService;
@@ -292,6 +293,12 @@ public class IndexController extends BaseController {
 							"select * from member_activity where id in (select  activity_id from member_activity_detail where userid="
 									+ memberid + ")", MemberActivity.class);
 			setAttr("activityList", activityList);
+			String searchSQL="";
+			List<MemberComplain> complainList = dalClient
+					.queryForObjectList(
+							"select * from member_complain where member_id ="+memberid + searchSQL+" order by complain_time desc",
+							MemberComplain.class);
+			setAttr("complainList", complainList);
 			return "/memberCenter";
 		}
 	}
@@ -482,12 +489,4 @@ public class IndexController extends BaseController {
 		return "/jingqu";
 	}
 
-	@RequestMapping("/chengxin")
-	public String chengxin(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		
-		SecurityNews securityNews=dalClient.queryForObject("select * from security_news where menu_id=1080",SecurityNews.class);
-		setAttr("securityNews", securityNews);
-		return "/chengxin";
-	}
 }

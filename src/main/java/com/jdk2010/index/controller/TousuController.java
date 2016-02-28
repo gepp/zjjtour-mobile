@@ -1,6 +1,8 @@
 package com.jdk2010.index.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +21,9 @@ import com.jdk2010.base.security.securitynews.service.ISecurityNewsService;
 import com.jdk2010.framework.constant.Constants;
 import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.dal.client.DalClient;
+import com.jdk2010.framework.util.DateUtil;
 import com.jdk2010.framework.util.DbKit;
+import com.jdk2010.framework.util.JsonUtil;
 import com.jdk2010.framework.util.Page;
 import com.jdk2010.framework.util.ReturnData;
 import com.jdk2010.framework.util.StringUtil;
@@ -55,6 +59,27 @@ public class TousuController extends BaseController {
         Map<String,Object>  indexMap=dalClient.queryForObject("select * from system_indexsetting");
         setAttr("indexMap", indexMap);
         return "/tousu" ;
+    }
+    
+    @RequestMapping("/tousuJson")
+    public void tousuJson(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	DbKit dbKit = new DbKit("select * from member_complain where replay_status=1 and review_status=1  order by complain_time desc");
+    	Page pagePage=getPage();
+    	pagePage.setPageSize(3);
+    	Page pageList = dalClient.queryForPageList(dbKit, pagePage, MemberComplain.class);
+    	List<Map<String,Object>> mapList=new ArrayList<Map<String,Object>>();
+    	for(int i=0;i<pageList.getList().size();i++){
+    		Map<String,Object> map=new HashMap<String, Object>();
+    		MemberComplain complain=(MemberComplain) pageList.getList().get(i);
+    		map.put("memberName", complain.getMemberName());
+    		map.put("complainTime", DateUtil.formatDateTime(complain.getComplainTime(),"yyyy-MM-dd"));
+    		map.put("replayTime", DateUtil.formatDateTime(complain.getReplayTime(),"yyyy-MM-dd"));
+    		map.put("complainTitle",complain.getComplainTitle());
+    		map.put("complainMessage", complain.getComplainMessage());
+    		map.put("replayMessage", complain.getReplayMessage());
+    		mapList.add(map);
+    	}
+    	renderJson(response, JsonUtil.toJson(mapList));
     }
     
     @RequestMapping("/wantTousu")

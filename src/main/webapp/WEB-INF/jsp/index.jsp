@@ -75,8 +75,13 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
+			
+			
 			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" style="margin: 0;" href="#middlePopover"></a>
-			<a class="mui-icon mui-icon-contact mui-pull-right" style="margin: 0;" href="#picture"></a>
+			<a class="mui-icon mui-icon-contact mui-pull-right" style="margin: 0;" href="
+			<c:if test="${member!=null }"> ${contextpath }/memberCenter.htm </c:if>
+			<c:if test="${member==null }"> #picture </c:if>
+			"></a>
 			<img src="${contextpath}/images/zjj-logo.png" height="36px" style="margin-top: 4px;">
 		</header>
 		<div class="mui-content">
@@ -115,7 +120,7 @@
 			<!--休闲张家界-->
 			<h5>休闲张家界</h5>
 			<ul class="mui-table-view mui-table-view-chevron">
-				<li class="mui-table-view-cell mui-media">
+				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${meishiMenu.id}');">
 					<a class="mui-navigate-right">
 						<img class="mui-media-object mui-pull-left" src="${meishiMenu.img }">
 						<div class="mui-media-body">
@@ -124,7 +129,7 @@
 						</div>
 					</a>
 				</li>
-				<li class="mui-table-view-cell mui-media">
+				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${jiudianMenu.id}');">
 					<a class="mui-navigate-right" href="javascript:;">
 						<img class="mui-media-object mui-pull-left" src="${jiudianMenu.img }">
 						<div class="mui-media-body">
@@ -133,7 +138,7 @@
 						</div>
 					</a>
 				</li>
-				<li class="mui-table-view-cell mui-media">
+				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${jingdianMenu.id}');">
 					<a class="mui-navigate-right">
 						<img class="mui-media-object mui-pull-left" src="${jingdianMenu.img }">
 						<div class="mui-media-body">
@@ -142,7 +147,7 @@
 						</div>
 					</a>
 				</li>
-				<li class="mui-table-view-cell mui-media">
+				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${menpiaoMenu.id}');">
 					<a class="mui-navigate-right">
 						<img class="mui-media-object mui-pull-left" src="${menpiaoMenu.img }">
 						<div class="mui-media-body">
@@ -158,7 +163,7 @@
 			<h5>娱乐张家界</h5>
 			<ul class="mui-table-view mui-grid-view">
 				<c:forEach var="yule" items="${activityList }">
-				<li class="mui-table-view-cell mui-media mui-col-xs-12">
+				<li class="mui-table-view-cell mui-media mui-col-xs-12" onclick="jumpActivityDetail('${yule.id}')">
 					<a href="#">
 						<img class="mui-media-object" src="${yule.indeximg }">
 						<div class="mui-media-body">${yule.abstractContent }</div>
@@ -221,6 +226,9 @@
 				window.location.href="${contextpath}/xiuxian.htm?secondMenuId="+secondMenuId;
 			}	
 			
+			function jumpActivityDetail(id){
+				window.location.href="${contextpath}/activityDetail.htm?id="+id;
+			}
 		</script>
 	</body>
 

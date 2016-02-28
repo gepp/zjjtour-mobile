@@ -58,7 +58,7 @@
 			</div>
 			<ul class="mui-table-view mui-grid-view">
 				<c:forEach var="item" items="${activityList }">
-				<li class="mui-table-view-cell mui-media mui-col-xs-6" onclick="jumpDetail('${item.id}')">
+				<li class="mui-table-view-cell mui-media mui-col-xs-6" onclick="jumpActivityDetail('${item.id}')">
 					<a href="#">
 						<img class="mui-media-object" src="${item.smallimg }">
 						<div class="mui-media-body">${item.title }</div>
@@ -98,6 +98,10 @@
 			function jumpActivity(activityStatus){
 				window.location.href="${contextpath}/activity.htm?activityStatus="+activityStatus;
 			}	
+			
+			function jumpActivityDetail(id){
+				window.location.href="${contextpath}/activityDetail.htm?id="+id;
+			}
 		</script>
 
 </html>

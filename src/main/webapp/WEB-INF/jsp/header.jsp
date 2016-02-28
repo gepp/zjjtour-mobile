@@ -37,7 +37,7 @@
 								 </c:forEach>
 							</ul>
 						</li>
-						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">游客中心</a>
+						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/memberCenter.htm'"><a class="mui-navigate-right" href="#">游客中心</a>
 							 
 						</li>
 					</ul>
@@ -50,10 +50,10 @@
 		<div id="picture" class="mui-popover mui-popover-action mui-popover-bottom">
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell">
-					<a href="#">登录</a>
+					<a href="${contextpath }/toLogin.htm">登录</a>
 				</li>
 				<li class="mui-table-view-cell">
-					<a href="#">注册</a>
+					<a href="${contextpath }/toRegister.htm">注册</a>
 				</li>
 			</ul>
 			<ul class="mui-table-view">
