@@ -10,11 +10,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
 		<!--标准mui.css-->
 		<link rel="stylesheet" href="${contextpath}/css/mui.min.css">
 		<!--App自定义的css-->
-		<link rel="stylesheet" type="text/css" href="${contextpath}/css/app.css" />
 		<style>
 			.mui-preview-image.mui-fullscreen {
 				position: fixed;
@@ -202,7 +200,10 @@
 			}
 			
 			.mui-h4 {
-				margin-top: 20px;
+				margin-top: 20px 20px 0 20px;
+				text-align: center;
+				line-height: 30px
+				
 			}
 			.mui-h5 {
 				color: #00BB9E;
@@ -225,7 +226,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
-			<h1 class="mui-title">列表详情</h1>
+			<h1 class="mui-title">活动详情</h1>
 			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" style="margin: 0 -10px 0 0;" href="#middlePopover"></a>
 		</header>
 		<div class="mui-content">
@@ -250,7 +251,10 @@
  			</div>
 		</div>
 		<nav class="mui-bar mui-bar-tab">
-			<button>立即报名</button>
+			<c:if test="${activity.activityStatus==1 }">
+			<button onclick="checkUser('${activity.activityStatus }','${activity.id }')">立即报名</button>
+			</c:if>
+			
 		</nav>
 		<!--右上角弹出菜单-->
 		<div id="header"></div>
@@ -260,11 +264,13 @@
 	<script src="${contextpath}/js/mui.zoom.js"></script>
 	<script src="${contextpath}/js/mui.previewimage.js"></script>
 	<script src="${contextpath}/js/jquery.min.js"></script>
+		<script src="${contextpath}/js/layer/layer.js"></script>
+		<script src="${contextpath}/js/common.js"></script>
 	
 	<script>
 	jQuery(document).ready(function() {
 		$("#header").load("${contextpath}/header.htm?type=yule");
-		$("#footer").load("${contextpath}/footer.htm");
+		/* $("#footer").load("${contextpath}/footer.htm"); */
 	});
 		mui.previewImage();
 		mui.init({
@@ -283,6 +289,51 @@
 		slider.slider({
 			interval: 5000
 		});
+		function checkUser(status,id){
+			if(status!=1){
+				layer.open({
+				    content: '您好，活动暂未开始或已结束！',
+				    btn: ['确定']
+				});
+				return false;
+			}
+				
+			$.ajax({
+				type: "post", 
+				url: "${contextpath}/checkActivity.htm?id="+id, 
+				dataType: "json",
+				success: function (data) { 
+					 if(data.status=='success'){
+						 layer.open({
+							    content: '恭喜您,报名成功！',
+							    btn: ['确认'],
+							    shadeClose: false,
+							    yes: function(){
+							    	window.location.reload();
+							    }, no: function(){
+							         
+							    }
+							});
+						 
+					 
+						 
+					 }else{
+						 layer.open({
+							    content: data.message,
+							    btn: ['确认'],
+							    shadeClose: false,
+							    yes: function(){
+							    	window.location.reload();
+							    }, no: function(){
+							         
+							    }
+							});
+						 
+						 
+					 }
+				} 
+		});
+		}
 	</script>
 
 </html>

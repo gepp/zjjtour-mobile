@@ -88,7 +88,7 @@
 		 
 			<div class="mui-content-padded">
 				<button onclick="login();" class="mui-btn mui-btn-block mui-btn-primary">登录</button>
-				<div class="link-area"><a href="${contextpath }/toRegister.htm">注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>忘记密码</a>
+				<div class="link-area"><a href="${contextpath }/toRegister.htm">注册账号</a> <span class="spliter">|</span> <a id='forgetPassword' href='${contextpath }/toGetPwd.htm'>忘记密码</a>
 				</div>
 			</div>
 			<div class="mui-content-padded oauth-area">
@@ -106,14 +106,14 @@
 			if ((mobile) == '') {
 				layer.open({
 				    content: '请输入手机号码！',
-				    btn: ['OK']
+				    btn: ['确定']
 				});
 				 
 				return false;
 			} else if ((cpassword) == '') {
 				layer.open({
 				    content: '请输入密码！',
-				    btn: ['OK']
+				    btn: ['确定']
 				});
 				return false;
 			}
@@ -131,7 +131,7 @@
 						 }else{
 							 layer.open({
 								    content: jsonArray.error.msg,
-								    btn: ['OK']
+								    btn: ['确定']
 								});
 							 $("#mobile").focus();
 							 return false;

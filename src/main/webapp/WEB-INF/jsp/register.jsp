@@ -86,6 +86,9 @@
 					<input id="cpassword" name="cpassword" type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
 				</div>
 				<div class="mui-input-row">
+					<input id="cpassword1" name="cpassword1" type="password" class="mui-input-clear mui-input" placeholder="请再次输入密码">
+				</div>
+				<div class="mui-input-row">
 					<input  id="verifyCode" name="verifyCode" type="text" class="mui-input-clear mui-input" placeholder="手机验证码">
 					<a  onclick="sendCode();" id="getCode">获取验证码</a>
 				</div>
@@ -108,13 +111,20 @@
 	function sendCode() {
 		var mobile = $("#mobile").val();
 		if (trim(mobile) == '') {
-			layer.msg('请输入手机号码！');
+			layer.open({
+			    content: '请输入手机号码！',
+			    btn: ['确定']
+			});
 			return false;
 		} else if (!(/^1[3|4|5|7|8]\d{9}$/.test(mobile))) {
-			layer.msg("手机号码有误，请 重新输入！");
+			
+			layer.open({
+			    content: '手机号码有误，请 重新输入！',
+			    btn: ['确定']
+			});
 			$("#mobile").focus();
 			return false;
-		} else {
+		}  else {
 			$.ajax({
 				type: "post", 
 				url: "${contextpath}/isExists.htm?mobile="+mobile, 
@@ -134,7 +144,7 @@
 					 }else{
 						 layer.open({
 							    content:'手机号码已存在,请重新输入您的手机号码！',
-							    btn: ['OK']
+							    btn: ['确定']
 							});
 						 $("#mobile").focus();
 						 return false;
@@ -156,12 +166,12 @@
 					 if(jsonArray.status=='success'){
 						 layer.open({
 							    content: '验证码已发送！',
-							    btn: ['OK']
+							    btn: ['确定']
 							});
 					 }else{
 						 layer.open({
 							    content:jsonArray.error.msg,
-							    btn: ['OK']
+							    btn: ['确定']
 							});
 						 $("#mobile").focus();
 						 return false;
@@ -173,22 +183,30 @@
 		var mobile = $("#mobile").val();
 		var verifyCode = $("#verifyCode").val();
 		var cpassword = $("#cpassword").val();
+		var cpassword1=$("#cpassword1").val();
+		if(cpassword!=cpassword1){
+			layer.open({
+			    content: '两次密码不一致,请重新输入！',
+			    btn: ['确定']
+			});
+			return false;
+		}
 		if (trim(mobile) == '') {
 			layer.open({
 			    content: '请输入手机号码！',
-			    btn: ['OK']
+			    btn: ['确定']
 			});
 			return false;
 		} else if (trim(verifyCode) == '') {
 			layer.open({
 			    content: '请输入验证码！',
-			    btn: ['OK']
+			    btn: ['确定']
 			});
 			return false;
 		} else if (trim(cpassword) == '') {
 			layer.open({
 			    content: '请输入密码！',
-			    btn: ['OK']
+			    btn: ['确定']
 			});
 			return false;
 		}
@@ -218,7 +236,7 @@
 					 }else{
 						 layer.open({
 							    content:jsonArray.error.msg,
-							    btn: ['OK']
+							    btn: ['确定']
 							});
 						 $("#mobile").focus();
 						 return false;

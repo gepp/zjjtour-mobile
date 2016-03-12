@@ -6,15 +6,14 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>列表详情</title>
+		<title>${securityNew.title }</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
+		<meta name="Keywords" content="${securityNew.keywords }">
 		<!--标准mui.css-->
 		<link rel="stylesheet" href="${contextpath}/css/mui.min.css">
 		<!--App自定义的css-->
-		<link rel="stylesheet" type="text/css" href="${contextpath}/css/app.css" />
 		<style>
 			.mui-preview-image.mui-fullscreen {
 				position: fixed;
@@ -191,16 +190,27 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
-			<h1 class="mui-title">诚信中心详情</h1>
+			<h1 class="mui-title">全景详情</h1>
 			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" style="margin: 0 -10px 0 0;" href="#middlePopover"></a>
 		</header>
 		<div class="mui-content">
+			<c:if test="${securityNew.maodianStatus==1 }">
+				<c:forEach items="${biaoqianList }" var="biaoqian">
+	 				    <h4 class="mui-h4">${biaoqian.maodian_name }</h4>
+	 				    <div class="mui-content-padded">
+							${biaoqian.maodian_content }
+						</div>
+ 				    </c:forEach>
+			</c:if>
+			
+			<c:if test="${securityNew.maodianStatus!=1 }">	
 			<h4 class="mui-h4">${securityNew.title }</h4>
 			<fmt:formatDate value="${securityNew.ctime }" pattern="yyyy-MM-dd" var="ctime"/>
 			<h5 class="mui-h5">发布时间：${ctime }</h5>
 			<div class="mui-content-padded">
 				${securityNew.content }
 			</div>
+			</c:if>
 		</div>
 		 <div id="footer"></div>
 		<!--右上角弹出菜单-->
@@ -215,7 +225,7 @@
 	<script>
 	jQuery(document).ready(function() {
 		$("#header").load("${contextpath}/header.htm?type=index");
-		/* $("#footer").load("${contextpath}/footer.htm"); */
+	/* 	$("#footer").load("${contextpath}/footer.htm"); */
 	});
 	mui.previewImage();
 		mui.init({

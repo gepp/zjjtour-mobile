@@ -228,7 +228,7 @@
 						<ul class="mui-table-view mui-table-view-chevron">
 							<li class="mui-table-view-cell mui-media">
 								<a class="mui-navigate-right" href="#account">
-									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="${contextpath}/images/logo.png">
+									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="${contextpath}/images/11.jpg">
 									<div class="mui-media-body">
 										${member.data.cname }
 										<p class='mui-ellipsis'>手机:${member.data.ctel }</p>
@@ -260,7 +260,7 @@
 		<!--单页面结束-->
 		<div id="account" class="mui-page">
 			<div class="mui-navbar-inner mui-bar mui-bar-nav">
-				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+				<button type="button" class="mui-left mui-action-back mui-btn   mui-btn-nav " onclick="window.location.href='${contextpath}/'">
 					<span class="mui-icon mui-icon-left-nav"></span>个人中心
 				</button>
 				<h1 class="mui-center mui-title">个人信息</h1>
@@ -272,7 +272,7 @@
 							<li class="mui-table-view-cell">
 								<a id="head" >头像
 								<span class="mui-pull-right head">
-									<img class="head-img mui-action-preview" id="head-img1" style="right: 15px;" src="${contextpath}/images/logo.png"/>
+									<img class="head-img mui-action-preview" id="head-img1" style="right: 15px;" src="${contextpath}/images/11.jpg"/>
 								</span>
 							</a>
 							</li>
@@ -304,32 +304,28 @@
 				<h1 class="mui-center mui-title">信息修改</h1>
 			</div>
 			<div class="mui-page-content">
+				
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll">
 						<ul class="mui-table-view">
 							<li class="mui-table-view-cell">
 								<a id="head" class="mui-navigate-right">头像
 								<span class="mui-pull-right head">
-									<img class="head-img mui-action-preview" id="head-img1" src="${contextpath}/images/logo.png">
+									<img class="head-img mui-action-preview" id="head-img1" src="${contextpath}/images/11.jpg">
 								</span>
 							</a>
 							</li>
 						</ul>
-						<form class="mui-input-group mui-table-view">
+						<form method="post" class="mui-input-group mui-table-view" action="${contextpath }/memberEditAction.htm" id="myform" name="myform">
 							<div class="mui-input-row">
 								<label>姓名</label>
-								<input type="text" placeholder="" value="${member.data.cname }" >
+								<input type="text" placeholder="" name="cname" id="cname" value="${member.data.cname }" >
 							</div>
-							 
-							<div class="mui-input-row">
-								<label>手机</label>
-								<input type="text" placeholder="" ${member.data.ctel }>
-							</div>
-							 
+							<br/>
 							 
 							<div class="mui-button-row">
-								<button type="button" class="mui-btn mui-btn-primary" onclick="return false;">确认</button>&nbsp;&nbsp;
-								<button type="button" class="mui-btn mui-btn-danger" onclick="return false;">取消</button>
+								<button type="button" class="mui-btn mui-btn-primary" onclick="submitform();">确认</button>&nbsp;&nbsp;
+								<button type="button" class="mui-btn mui-btn-danger" onclick="window.location.href='${contextpath}/memberCenter.htm'">取消</button>
 							</div>
 						</form>
 					</div>
@@ -342,14 +338,14 @@
 					<span class="mui-icon mui-icon-left-nav"></span>个人中心
 				</button>
 				<h1 class="mui-center mui-title">我的活动</h1>
-				<a id="menu" class="iconfont mui-pull-right" style="margin: 0;position: absolute;top: 0;right: 10px;line-height: 44px;font-size: 24px;" href="#middlePopover">&#xe61c;</a>
+				<!-- <a id="menu" class="iconfont mui-pull-right" style="margin: 0;position: absolute;top: 0;right: 10px;line-height: 44px;font-size: 24px;" href="#middlePopover">&#xe61c;</a> -->
 			</div>
 			<div class="mui-page-content">
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll">
 						<ul class="mui-table-view mui-grid-view">
 						<c:forEach items="${activityList }" var="activity">
-							<li class="mui-table-view-cell mui-media mui-col-xs-6">
+							<li class="mui-table-view-cell mui-media mui-col-xs-6" onclick="jumpActivityDetail('${activity.id}')" >
 								<a href="#">
 									<img class="mui-media-object" src="${activity.indeximg }">
 									<span class="start">进行中</span>
@@ -369,15 +365,15 @@
 					<span class="mui-icon mui-icon-left-nav"></span>个人中心
 				</button>
 				<h1 class="mui-center mui-title">我的投诉</h1>
-				<a id="menu" class="iconfont mui-pull-right" style="margin: 0;position: absolute;top: 0;right: 10px;line-height: 44px;font-size: 24px;" href="#middlePopover">&#xe61c;</a>
-			</div>
+<!-- 				<a id="menu" class="iconfont mui-pull-right" style="margin: 0;position: absolute;top: 0;right: 10px;line-height: 44px;font-size: 24px;" href="#middlePopover">&#xe61c;</a>
+ -->			</div>
 			<div class="mui-page-content">
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll">
 						<div class="mui-content">
 							<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
 								<c:forEach items="${complainList }" var="item">
-								<li class="mui-table-view-cell">
+								<li class="mui-table-view-cell" onclick="gotoTousuDetail('${item.id}');">
 									<div class="mui-table">
 										<div class="mui-table-cell mui-col-xs-10">
 											<h4 class="mui-ellipsis">${item.complainTitle }</h4>
@@ -525,6 +521,7 @@
 			})
 		}
 
+		
 		function galleryImg() {
 			plus.gallery.pick(function(a) {
 				plus.io.resolveLocalFileSystemURL(a, function(entry) {
@@ -666,6 +663,15 @@
 			});
 		}
 
+		function gotoTousuDetail(id){
+			window.location.href='${contextpath}/tousuDetail.htm?id='+id;
+		}
+		function jumpActivityDetail(id){
+			window.location.href="${contextpath}/activityDetail.htm?id="+id;
+		}
+		function submitform(){
+			$("#myform").submit();
+		}
 	</script>
 
 </html>

@@ -8,7 +8,16 @@
 			<div class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 					<ul class="mui-table-view">
-						<li class="mui-table-view-cell"><a class="mui-navigate-right" href="${contextpath }/">首页</a></li>
+						<li class="mui-table-view-cell" onclick="window.location.href='${contextpath}/'"><a class="mui-navigate-right" href="#">首页</a></li>
+						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">全景</a>
+							<ul class="mui-table-view mui-table-view-chevron">
+								<c:forEach var="menu"  items="${quanjingMenuList }">
+								<li class="mui-table-view-cell" onclick="jumpQuanjing('${menu.id}')"><a class="mui-navigate-right" href="#">${menu.name }</a>
+								</li>
+								 </c:forEach>
+							</ul>
+						</li>
+						
 						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">畅游</a>
 							<ul class="mui-table-view mui-table-view-chevron">
 								<c:forEach var="menu"  items="${changyouMenuList }">
@@ -38,7 +47,9 @@
 							</ul>
 						</li>
 						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/memberCenter.htm'"><a class="mui-navigate-right" href="#">游客中心</a>
-							 
+						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/tousu.htm'"><a class="mui-navigate-right" href="#">投诉中心</a>
+						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/chengxin.htm'"><a class="mui-navigate-right" href="#">诚信中心</a>
+						
 						</li>
 					</ul>
 				</div>
@@ -75,6 +86,9 @@
 		}
 		function jumpXiuxian(secondMenuId){
 			window.location.href="${contextpath}/xiuxian.htm?secondMenuId="+secondMenuId;
+		}
+		function jumpQuanjing(secondMenuId){
+			window.location.href="${contextpath}/quanjing.htm?secondMenuId="+secondMenuId;
 		}
 		</script>
 </html>

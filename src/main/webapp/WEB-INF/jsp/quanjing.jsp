@@ -14,7 +14,6 @@
 		<!--标准mui.css-->
 		<link rel="stylesheet" href="${contextpath}/css/mui.min.css">
 		<!--App自定义的css-->
-		<link rel="stylesheet" type="text/css" href="${contextpath}/css/app.css" />
 		<style>
 			h5 {
 				padding-top: 8px;
@@ -44,22 +43,24 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<button onclick="window.location.href='${contextpath}/'" class=" mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
-			<h1 class="mui-title">${thirdShowName }</h1>
+			<h1 class="mui-title">全景</h1>
 			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" style="margin: 0 -10px 0 0;" href="#middlePopover"></a>
 		</header>
 		<div class="mui-content">
 			<div class="mui-content-padded">
-				<div class="mui-btn <c:if test="${secondMenuId==''}"> mui-btn-primary</c:if> "  onclick="jumpXiuxian('')">
-					全部
-				</div>
-			<c:forEach var="menu" items="${secondMenuList }">
-				<div class="mui-btn <c:if test="${secondMenuId==menu.id}"> mui-btn-primary</c:if>" onclick="jumpXiuxian('${menu.id}')">
-				${menu.name }
+				 
+			<c:forEach var="secondMenu" items="${secondMenuList }">
+				<div <c:if test="${secondMenu.id==secondMenuId}">class="mui-btn mui-btn-primary"</c:if>
+					<c:if test="${secondMenu.id!=secondMenuId}">class="mui-btn "</c:if>
+				onclick="jumpQuanjing('${secondMenu.id}')" >
+				${secondMenu.name }
 				</div>
 			</c:forEach>
 			</div>
+			<input type="hidden" name="secondMenuId" id="secondMenuId" value="${secondMenuId }"/>
+		<input type="hidden" name="currentId" id="currentId" value="${currentId }"/>
 			<ul class="mui-table-view">
-				<c:forEach var="item" items="${newsList }">
+				<c:forEach var="item" items="${quanjingList }">
 				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}')">
 					<a href="javascript:;">
 						<img class="mui-media-object mui-pull-left" src="${item.indeximg } ">
@@ -97,11 +98,12 @@
 			slider.slider({
 				interval: 5000
 			});
-			function jumpXiuxian(secondMenuId){
-				window.location.href="${contextpath}/xiuxian.htm?secondMenuId="+secondMenuId;
-			}
+			function jumpQuanjing(bqId){
+				var secondMenuId=$("#secondMenuId").val();
+				window.location.href="${contextpath}/quanjing.htm?currentId="+bqId+"&secondMenuId="+secondMenuId;
+			} 
 			function jumpDetail(id){
-				window.location.href='${contextpath}/xiuxianDetail.htm?id='+id;
+				window.location.href='${contextpath}/quanjingDetail.htm?id='+id;
 			}
 		</script>
 

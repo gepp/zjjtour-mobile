@@ -53,6 +53,8 @@
 				padding-top: 8px;
 				padding-bottom: 8px;
 				text-indent: 12px;
+				color:#000;
+				font-weight:bolder;
 			}
 			
 			.mui-table-view-cell h5 {
@@ -105,7 +107,18 @@
 				</div>
 			</div>
 			<!--畅游张家界-->
-			<h5>畅游张家界</h5>
+			<h5>全景<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/quanjing.htm'">更多</span></h5>
+			<ul class="mui-table-view mui-grid-view">
+				<c:forEach items="${quanjingList }" var="quanjing">
+				<li class="mui-table-view-cell mui-media mui-col-xs-6">
+					<a href="javascript:void(0)"  onclick="jumpQuanjingDetail('${quanjing.id}')">
+						<img class="mui-media-object" src="${quanjing.indeximg }">
+						<div class="mui-media-body">${quanjing.title }</div>
+					</a>
+				</li>
+				 </c:forEach>
+			</ul>
+			<h5>畅游张家界<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/changyou.htm'">更多</span></h5>
 			<ul class="mui-table-view mui-grid-view">
 				<c:forEach items="${changyouList }" var="changyou">
 				<li class="mui-table-view-cell mui-media mui-col-xs-6">
@@ -116,13 +129,16 @@
 				</li>
 				 </c:forEach>
 			</ul>
+			
+			
+			
 			<!--畅游张家界 end-->
 			<!--休闲张家界-->
-			<h5>休闲张家界</h5>
+			<h5>休闲张家界<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/xiuxian.htm'">更多</span></h5>
 			<ul class="mui-table-view mui-table-view-chevron">
 				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${meishiMenu.id}');">
 					<a class="mui-navigate-right">
-						<img class="mui-media-object mui-pull-left" src="${meishiMenu.img }">
+						<img class="mui-media-object mui-pull-left" src="${meishiMenu.img }-wxxindex">
 						<div class="mui-media-body">
 							${meishiMenu.name }
 							<p class="mui-ellipsis">${meishiMenu.description }</p>
@@ -131,7 +147,7 @@
 				</li>
 				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${jiudianMenu.id}');">
 					<a class="mui-navigate-right" href="javascript:;">
-						<img class="mui-media-object mui-pull-left" src="${jiudianMenu.img }">
+						<img class="mui-media-object mui-pull-left" src="${jiudianMenu.img }-wxxindex">
 						<div class="mui-media-body">
 							${jiudianMenu.name }
 							<p class="mui-ellipsis">${jiudianMenu.description }</p>
@@ -140,7 +156,7 @@
 				</li>
 				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${jingdianMenu.id}');">
 					<a class="mui-navigate-right">
-						<img class="mui-media-object mui-pull-left" src="${jingdianMenu.img }">
+						<img class="mui-media-object mui-pull-left" src="${jingdianMenu.img }-wxxindex">
 						<div class="mui-media-body">
 							${jingdianMenu.name }
 							<p class="mui-ellipsis">${jingdianMenu.description }</p>
@@ -149,7 +165,7 @@
 				</li>
 				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${menpiaoMenu.id}');">
 					<a class="mui-navigate-right">
-						<img class="mui-media-object mui-pull-left" src="${menpiaoMenu.img }">
+						<img class="mui-media-object mui-pull-left" src="${menpiaoMenu.img }-wxxindex">
 						<div class="mui-media-body">
 							${menpiaoMenu.name }
 							<p class="mui-ellipsis">${menpiaoMenu.description}</p>
@@ -160,7 +176,7 @@
 			<!--休闲张家界 end-->
 
 			<!--娱乐张家界-->
-			<h5>娱乐张家界</h5>
+			<h5>娱乐张家界 <span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/activity.htm'">更多</span></h5>
 			<ul class="mui-table-view mui-grid-view">
 				<c:forEach var="yule" items="${activityList }">
 				<li class="mui-table-view-cell mui-media mui-col-xs-12" onclick="jumpActivityDetail('${yule.id}')">
@@ -173,7 +189,7 @@
 			</ul>
 			<!--娱乐张家界 end-->
 			<!--听闻张家界-->
-			<h5>听闻张家界</h5>
+			<h5>听闻张家界<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/tingwen.htm'">更多</span></h5>
 			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
 				<c:forEach var="tingwen" items="${tingwenList }">
 				<li class="mui-table-view-cell" onclick="jumpTingwenDetail('${tingwen.id}')">
@@ -218,6 +234,9 @@
 			});
 			function jumpChangyouDetail(id){
 				window.location.href='${contextpath}/changyouDetail.htm?id='+id;
+			}
+			function jumpQuanjingDetail(id){
+				window.location.href='${contextpath}/quanjingDetail.htm?id='+id;
 			}
 			function jumpTingwenDetail(id){
 				window.location.href='${contextpath}/tingwenDetail.htm?id='+id;

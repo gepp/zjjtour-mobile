@@ -78,7 +78,7 @@
 	<script>
 	jQuery(document).ready(function() {
 		$("#header").load("${contextpath}/header.htm?type=index");
-		$("#footer").load("${contextpath}/footer.htm");
+		/* $("#footer").load("${contextpath}/footer.htm"); */
 	});
 		mui.init({
 			swipeBack: true //启用右滑关闭功能

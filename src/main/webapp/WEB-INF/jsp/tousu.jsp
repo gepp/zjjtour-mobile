@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html>
@@ -50,9 +51,15 @@
 		</header>
 		<div class="mui-content">
 			<ul class="mui-table-view mui-grid-view">
+				<c:if test="${pageList.list== null || fn:length(pageList.list) == 0}">
+				<li class="mui-table-view-cell mui-media mui-col-xs-12" >
+				<h5>您好,暂无游客投诉.&nbsp;&nbsp;</h5>
+				</li>
+				</c:if>
+				<c:if test="${pageList.list!= null && fn:length(pageList.list) > 0}">
 				<c:forEach items="${pageList.list }" var="item">
 				<fmt:formatDate value="${item.complainTime }" pattern="yyyy-MM-dd" var="complainTime"/>
-				<li class="mui-table-view-cell mui-media mui-col-xs-12">
+				<li class="mui-table-view-cell mui-media mui-col-xs-12" >
 					<span><i class="iconfont">&#xe61a;</i><b>${item.memberName }</b><time>${complainTime }</time></span>
 					<h5>${item.complainTitle }</h5>
 					<p>${item.complainMessage }&nbsp;&nbsp;</p>
@@ -62,12 +69,14 @@
 				</li>
 				</c:forEach> 
 				<div id="moreLi">
-				
 				</div>
+				<button id="moreBtn" type="button" class="mui-btn mui-btn-block mui-btn-radius" style="margin: 0;" onclick="getMore()">加载更多</button>
+				</c:if>
+				
 			</ul>
 			
-			<button id="moreBtn" type="button" class="mui-btn mui-btn-block mui-btn-radius" style="margin: 0;" onclick="getMore()">加载更多</button>
-			<button id="noBtn" style="display:none" type="button" class="mui-btn mui-btn-block mui-btn-radius" style="margin: 0;" >没有数据了...</button>
+			
+			<button id="noBtn" style="display:none;margin-left:0px" type="button" class="mui-btn mui-btn-block mui-btn-radius"  >没有数据了...</button>
 		</div>
 		<nav class="mui-bar mui-bar-tab">
 			<button onclick="wantTousu();">我要投诉</button>
@@ -150,6 +159,7 @@
 					} 
 			});
 			}
+			
 		</script>
 
 </html>

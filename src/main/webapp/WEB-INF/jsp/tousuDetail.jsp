@@ -7,7 +7,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>我要投诉</title>
+		<title>投诉详情</title>
 		<link href="${contextpath}/css/mui.min.css" rel="stylesheet" />
 		<style>
 			.area {
@@ -75,23 +75,27 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
-			<h1 class="mui-title">我要投诉</h1>
+			<h1 class="mui-title">投诉详情</h1>
 		</header>
 		<div class="mui-content">
-			<form id='login-form' class="mui-input-group">
-				<div class="mui-input-row">
-					<input name="complain_title" id="complain_title" type="text" class="mui-input-clear mui-input" placeholder="请输入投诉标题">
+				<div class="" style="padding:12px;height:40px">
+					投诉标题：${complain.complainTitle }
 				</div>
-				<div>
-					<textarea name="complain_message" id="complain_message" rows="5"  placeholder="请输入投诉内容"></textarea>
+				<br/>
+				<div style="padding:12px;height:40px">
+					投诉内容：${complain.complainMessage }
 				</div>
-			</form>
+				
+				<br/>
+				<div style="padding:12px;height:40px">
+					回复内容：${complain.replayMessage }
+				</div>
 			
-			<div class="mui-content-padded">
-				<button onclick="tousu();" class="mui-btn mui-btn-block mui-btn-primary">投诉</button>
-			</div>
+			
 			<div class="mui-content-padded oauth-area">
-
+			<div class="mui-content-padded">
+				<button onclick="" class="mui-btn mui-btn-block mui-btn-primary mui-action-back">返回</button>
+			</div>
 			</div>
 		</div>
 		<div id="header"></div>
