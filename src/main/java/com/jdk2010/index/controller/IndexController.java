@@ -3,6 +3,7 @@ package com.jdk2010.index.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +25,13 @@ import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.dal.client.DalClient;
 import com.jdk2010.framework.util.JsonUtil;
 import com.jdk2010.framework.util.ReturnData;
+import com.jdk2010.framework.util.StringUtil;
 import com.jdk2010.member.memberactivity.model.MemberActivity;
 import com.jdk2010.member.membercomplain.model.MemberComplain;
 import com.jdk2010.search.systemsearchword.model.SystemSearchword;
 import com.jdk2010.system.systemadv.model.SystemAdv;
 import com.jdk2010.system.systemadv.service.ISystemAdvService;
+import com.jdk2010.util.QiniuUtil;
 import com.jdk2010.util.ZjjMsgUtil;
 
 @Controller
@@ -46,10 +49,11 @@ public class IndexController extends BaseController {
 	ISystemAdvService systemAdvService;
 
 	@RequestMapping("/dtIndex")
-	public String dtIndex(HttpServletRequest request, HttpServletResponse response){
+	public String dtIndex(HttpServletRequest request,
+			HttpServletResponse response) {
 		return "index";
 	}
-	
+
 	@RequestMapping("/")
 	public String index(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -61,28 +65,28 @@ public class IndexController extends BaseController {
 		setAttr("advList", advList);
 
 		List<SecurityMenu> quanjingMenuList = dalClient.queryForObjectList(
-                "select * from security_menu where parent_id=1011",
-                SecurityMenu.class);
-        setAttr("quanjingMenuList", quanjingMenuList);
+				"select * from security_menu where parent_id=1011",
+				SecurityMenu.class);
+		setAttr("quanjingMenuList", quanjingMenuList);
 
-        List<SecurityMenu> changyouMenuList = dalClient.queryForObjectList(
-                "select * from security_menu where parent_id=1010",
-                SecurityMenu.class);
-        setAttr("changyouMenuList", changyouMenuList);
+		List<SecurityMenu> changyouMenuList = dalClient.queryForObjectList(
+				"select * from security_menu where parent_id=1010",
+				SecurityMenu.class);
+		setAttr("changyouMenuList", changyouMenuList);
 
-        List<SecurityMenu> tingwenMenuList = dalClient.queryForObjectList(
-                "select * from security_menu where parent_id=1037",
-                SecurityMenu.class);
-        setAttr("tingwenMenuList", tingwenMenuList);
+		List<SecurityMenu> tingwenMenuList = dalClient.queryForObjectList(
+				"select * from security_menu where parent_id=1037",
+				SecurityMenu.class);
+		setAttr("tingwenMenuList", tingwenMenuList);
 
-        List<SecurityMenu> xiuxianMenuList = dalClient.queryForObjectList(
-                "select * from security_menu where parent_id=1058",
-                SecurityMenu.class);
-        setAttr("xiuxianMenuList", xiuxianMenuList);
-        
-        Map<String, Object> indexMap = dalClient
-                .queryForObject("select * from system_indexsetting");
-        setAttr("indexMap", indexMap);
+		List<SecurityMenu> xiuxianMenuList = dalClient.queryForObjectList(
+				"select * from security_menu where parent_id=1058",
+				SecurityMenu.class);
+		setAttr("xiuxianMenuList", xiuxianMenuList);
+
+		Map<String, Object> indexMap = dalClient
+				.queryForObject("select * from system_indexsetting");
+		setAttr("indexMap", indexMap);
 
 		// 视频管理
 		List<SecurityNews> videoList = dalClient
@@ -139,8 +143,6 @@ public class IndexController extends BaseController {
 						SecurityMenu.class);
 		setAttr("menpiaoMenu", menpiaoMenu);
 
-	 
-
 		return "/index";
 	}
 
@@ -167,15 +169,18 @@ public class IndexController extends BaseController {
 				"select * from security_menu where parent_id=1058",
 				SecurityMenu.class);
 		setAttr("xiuxianMenuList", xiuxianMenuList);
-		
+
 		Map<String, Object> indexMap = dalClient
 				.queryForObject("select * from system_indexsetting");
 		setAttr("indexMap", indexMap);
 
 		String type = getPara("type");
 		setAttr("type", type);
-		
-		List<SystemSearchword> wordList=dalClient.queryForObjectList("select * from system_searchword where status=1 order by orderlist ",SystemSearchword.class);
+
+		List<SystemSearchword> wordList = dalClient
+				.queryForObjectList(
+						"select * from system_searchword where status=1 order by orderlist ",
+						SystemSearchword.class);
 		setAttr("wordList", wordList);
 
 		return "/header";
@@ -293,11 +298,12 @@ public class IndexController extends BaseController {
 							"select * from member_activity where id in (select  activity_id from member_activity_detail where userid="
 									+ memberid + ")", MemberActivity.class);
 			setAttr("activityList", activityList);
-			String searchSQL="";
-			List<MemberComplain> complainList = dalClient
-					.queryForObjectList(
-							"select * from member_complain where member_id ="+memberid + searchSQL+" order by complain_time desc",
-							MemberComplain.class);
+			String searchSQL = "";
+			List<MemberComplain> complainList = dalClient.queryForObjectList(
+					"select * from member_complain where member_id ="
+							+ memberid + searchSQL
+							+ " order by complain_time desc",
+					MemberComplain.class);
 			setAttr("complainList", complainList);
 			return "/memberCenter";
 		}
@@ -310,6 +316,12 @@ public class IndexController extends BaseController {
 		if (member == null) {
 			return "/login";
 		} else {
+			Map<String, Object> data = (Map<String, Object>) member.get("data");
+			String birthday = (String) data.get("dbirthday");
+			if (birthday != null) {
+				String dbirthday = ZjjMsgUtil.transdate(birthday);
+				setAttr("dbirthday", dbirthday);
+			}
 			return "/memberEdit";
 		}
 	}
@@ -318,37 +330,44 @@ public class IndexController extends BaseController {
 	public String memberEditAction(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Map<String, Object> member = getSessionAttr("member");
-		System.out.println("member:"+member);
+		System.out.println("member:" + member);
 		if (member == null) {
 			return "/login";
 		} else {
-			
-		Map<String, Object> data = (Map<String, Object>) member.get("data");
-		System.out.println(data);
-		String memberid = data.get("id") + "";
-		Integer id=Integer.parseInt(memberid);
-		String cnickname = getPara("cnickname");
-		cnickname="";
-		String cname = getPara("cname");
-		String csex = getPara("csex");
-		csex="";
-		String dbirthday = getPara("dbirthday");
-		dbirthday="";
-		
-		String cemail = getPara("cemail");
-		cemail="";
-		String cheadimgurl = getPara("cheadimgurl");
-		cheadimgurl="";
-		String returnMsg = ZjjMsgUtil.updateMember(id, cnickname, cname, csex,
-				dbirthday, cemail, cheadimgurl);
-		Map returnMap=JsonUtil.jsonToMap(returnMsg);
-		if(returnMap.get("status").equals("failure")){
-			
-		}else{
-			setSessionAttr("member",returnMap );
-		}
-		
-		return FORWARD+"/memberCenter";
+			Map<String, Object> data = (Map<String, Object>) member.get("data");
+			String memberid = data.get("id") + "";
+			Integer id = Integer.parseInt(memberid);
+			String cnickname = getPara("cnickname");
+			// cnickname = "";
+			String cname = getPara("cname");
+			String csex = getPara("csex");
+			// csex = "";
+			String dbirthday = getPara("dbirthday");
+			// dbirthday = "";
+
+			String cemail = getPara("cemail");
+			// cemail = "";
+			String cheadimgurl = getPara("memberImage1");
+			if (StringUtil.isNotBlank(cheadimgurl)) {
+
+				String path = request.getRealPath("/");
+				String imgName = UUID.randomUUID().toString() + ".jpeg";
+				com.jdk2010.util.ImageUtils.decodeBase64ToImage(
+						cheadimgurl.split(",")[1], path, imgName);
+				System.out.println("path + imgName:" + path + imgName);
+				cheadimgurl = QiniuUtil.upload(path + imgName);
+			}
+			// cheadimgurl = "";
+			String returnMsg = ZjjMsgUtil.updateMember(id, cnickname, cname,
+					csex, dbirthday, cemail, cheadimgurl);
+			Map returnMap = JsonUtil.jsonToMap(returnMsg);
+			if (returnMap.get("status").equals("failure")) {
+
+			} else {
+				setSessionAttr("member", returnMap);
+			}
+
+			return FORWARD + "/memberCenter";
 		}
 	}
 
@@ -481,8 +500,7 @@ public class IndexController extends BaseController {
 						+ currentId + ")");
 		renderJson(response, newsList);
 	}
-	
-	
+
 	@RequestMapping("/jingqu")
 	public String jingqu(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

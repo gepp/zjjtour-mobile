@@ -228,7 +228,9 @@
 						<ul class="mui-table-view mui-table-view-chevron">
 							<li class="mui-table-view-cell mui-media">
 								<a class="mui-navigate-right" href="#account">
-									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="${contextpath}/images/11.jpg">
+								<img class="mui-media-object mui-pull-left head-img" src="
+									<c:if test="${member.data.cheadimgurl==null }">${contextpath}/images/11.jpg</c:if><c:if test="${member.data.cheadimgurl!=null }">${member.data.cheadimgurl }</c:if>
+									"/>
 									<div class="mui-media-body">
 										${member.data.cname }
 										<p class='mui-ellipsis'>手机:${member.data.ctel }</p>
@@ -272,7 +274,9 @@
 							<li class="mui-table-view-cell">
 								<a id="head" >头像
 								<span class="mui-pull-right head">
-									<img class="head-img mui-action-preview" id="head-img1" style="right: 15px;" src="${contextpath}/images/11.jpg"/>
+									<img style="right: 15px;" class="head-img mui-action-preview" src="
+									<c:if test="${member.data.cheadimgurl==null }">${contextpath}/images/11.jpg</c:if><c:if test="${member.data.cheadimgurl!=null }">${member.data.cheadimgurl }</c:if>
+									"/>
 								</span>
 							</a>
 							</li>
@@ -311,16 +315,36 @@
 							<li class="mui-table-view-cell">
 								<a id="head" class="mui-navigate-right">头像
 								<span class="mui-pull-right head">
-									<img class="head-img mui-action-preview" id="head-img1" src="${contextpath}/images/11.jpg">
+									<img  class="head-img mui-action-preview" id="memberImage" name="memberImage" src="
+									<c:if test="${member.data.cheadimgurl==null }">${contextpath}/images/11.jpg</c:if><c:if test="${member.data.cheadimgurl!=null }">${member.data.cheadimgurl }</c:if>
+									"/>
+										<input type="file" value="" capture="camera" accept="image/*" id="cameraInput" name="cameraInput"
+										style="position:absolute;top:10px;right:50px;width:130px;height:130px;color:transparent;text-indent:-9999em"
+										/>
+										<canvas id="myCanvas" style="display:none"></canvas>
+										<input type="hidden" value="" name="memberImage1" id="memberImage1"/>
 								</span>
 							</a>
 							</li>
 						</ul>
 						<form method="post" class="mui-input-group mui-table-view" action="${contextpath }/memberEditAction.htm" id="myform" name="myform">
 							<div class="mui-input-row">
-								<label>姓名</label>
+								<label>真实姓名</label>
 								<input type="text" placeholder="" name="cname" id="cname" value="${member.data.cname }" >
 							</div>
+							<div class="mui-input-row">
+								<label>昵称</label>
+								<input type="text" placeholder="" name="cnickname" id="cnickname" value="${member.data.cnickname }" >
+							</div>
+							<div class="mui-input-row">
+								<label>邮箱</label>
+								<input type="text" placeholder="" name="cemail" id="cemail" value="${member.data.cemail }" >
+							</div>
+							<div class="mui-input-row">
+								<label>生日</label>
+								<button id='demo1' data-options='{}' class="btn mui-btn mui-btn-block">选择日期时间 ...</button>
+ 							</div>
+							
 							<br/>
 							 
 							<div class="mui-button-row">
@@ -430,14 +454,41 @@
 		</div>
 	</body>
 	<script src="${contextpath}/js/mui.min.js "></script>
+	<script src="${contextpath}/js/mui.dtpicker.js"></script>-->
+		<script src="${contextpath}/js/mui.picker.min.js"></script>
 	<script src="${contextpath}/js/mui.view.js "></script>
 	<script src="${contextpath}/js/jquery.min.js"></script>
 		<script src="${contextpath}/js/layer/layer.js"></script>
 		<script src="${contextpath}/js/common.js"></script>
-		
+		<script src="${contextpath}/js/MegaPixImage.js" type="text/javascript"></script>
+		<script src="${contextpath}/js/exif.min.js" type="text/javascript"></script>
 	<!--<script src='${contextpath}/js/feedback.js'></script>
 	<script src="${contextpath}/js/feedback-page.js"></script>-->
 	<script>
+		
+	jQuery(document).ready(function() {
+		  var fileInput = document.getElementById('cameraInput');
+	      fileInput.onchange = function () {
+	          var file = fileInput.files[0];
+	          var mpImg = new MegaPixImage(file);
+	          var resCanvas1 = document.getElementById('myCanvas');
+	          var _max = 320;
+	          EXIF.getData(file, function(){ 
+	              var Orientation= EXIF.getTag(this,'Orientation'); 
+	               mpImg.render(resCanvas1, {
+	              maxHeight: _max,
+	              orientation: Orientation
+	          });
+	              
+	          }); 
+	          setTimeout(function(){
+	        	  alert(resCanvas1.toDataURL());
+	        	  $("#memberImage").attr("src",resCanvas1.toDataURL());
+	        	  $("#memberImage1").val(resCanvas1.toDataURL());
+	          },200);
+
+	      };
+	});
 		mui.init();
 		//初始化单页view
 		var viewApi = mui('#app').view({
@@ -471,176 +522,52 @@
 				//				console.log(e.detail.page.id + ' back');
 			});
 		})(mui);
-		//更换头像
-		mui(".mui-table-view-cell").on("tap", "#head", function(e) {
-			if (mui.os.plus) {
-				var a = [{
-					title: "拍照"
-				}, {
-					title: "从手机相册选择"
-				}];
-				plus.nativeUI.actionSheet({
-					title: "修改头像",
-					cancel: "取消",
-					buttons: a
-				}, function(b) {
-					switch (b.index) {
-						case 0:
-							break;
-						case 1:
-							getImage();
-							break;
-						case 2:
-							galleryImg();
-							break;
-						default:
-							break
-					}
-				})
-			}
-		});
-
-		function getImage() {
-			var c = plus.camera.getCamera();
-			c.captureImage(function(e) {
-				plus.io.resolveLocalFileSystemURL(e, function(entry) {
-					var s = entry.toLocalURL() + "?version=" + new Date().getTime();
-					console.log(s);
-					document.getElementById("head-img").src = s;
-					document.getElementById("head-img1").src = s;
-					//变更大图预览的src
-					//目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现
-					document.querySelector("#__mui-imageview__group .mui-slider-item img").src = s + "?version=" + new Date().getTime();;;
-				}, function(e) {
-					console.log("读取拍照文件错误：" + e.message);
-				});
-			}, function(s) {
-				console.log("error" + s);
-			}, {
-				filename: "_doc/head.jpg"
-			})
-		}
+		 
+		(function($) {
+			$.init();
+			var result = $('#result')[0];
+			var btns = $('.btn');
+			btns.each(function(i, btn) {
+				btn.addEventListener('tap', function() {
+					var optionsJson = this.getAttribute('data-options') || '{}';
+					var options = JSON.parse(optionsJson);
+					var id = this.getAttribute('id');
+					/*
+					 * 首次显示时实例化组件
+					 * 示例为了简洁，将 options 放在了按钮的 dom 上
+					 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+					 */
+					var picker = new $.DtPicker(options);
+					picker.show(function(rs) {
+						/*
+						 * rs.value 拼合后的 value
+						 * rs.text 拼合后的 text
+						 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+						 * rs.m 月，用法同年
+						 * rs.d 日，用法同年
+						 * rs.h 时，用法同年
+						 * rs.i 分（minutes 的第二个字母），用法同年
+						 */
+						result.innerText = '选择结果: ' + rs.text;
+						/* 
+						 * 返回 false 可以阻止选择框的关闭
+						 * return false;
+						 */
+						/*
+						 * 释放组件资源，释放后将将不能再操作组件
+						 * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+						 * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+						 * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+						 */
+						picker.dispose();
+					});
+				}, false);
+			});
+		})(mui);
+		 
 
 		
-		function galleryImg() {
-			plus.gallery.pick(function(a) {
-				plus.io.resolveLocalFileSystemURL(a, function(entry) {
-					plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
-						root.getFile("head.jpg", {}, function(file) {
-							//文件已存在
-							file.remove(function() {
-								console.log("file remove success");
-								entry.copyTo(root, 'head.jpg', function(e) {
-										var e = e.fullPath + "?version=" + new Date().getTime();
-										document.getElementById("head-img").src = e;
-										document.getElementById("head-img1").src = e;
-										//变更大图预览的src
-										//目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现
-										document.querySelector("#__mui-imageview__group .mui-slider-item img").src = e + "?version=" + new Date().getTime();;
-									},
-									function(e) {
-										console.log('copy image fail:' + e.message);
-									});
-							}, function() {
-								console.log("delete image fail:" + e.message);
-							});
-						}, function() {
-							//文件不存在
-							entry.copyTo(root, 'head.jpg', function(e) {
-									var path = e.fullPath + "?version=" + new Date().getTime();
-									document.getElementById("head-img").src = path;
-									document.getElementById("head-img1").src = path;
-									//变更大图预览的src
-									//目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现
-									document.querySelector("#__mui-imageview__group .mui-slider-item img").src = path;
-								},
-								function(e) {
-									console.log('copy image fail:' + e.message);
-								});
-						});
-					}, function(e) {
-						console.log("get _www folder fail");
-					})
-				}, function(e) {
-					console.log("读取拍照文件错误：" + e.message);
-				});
-			}, function(a) {}, {
-				filter: "image"
-			})
-		};
-
-		function defaultImg() {
-			if (mui.os.plus) {
-				plus.io.resolveLocalFileSystemURL("_doc/head.jpg", function(entry) {
-					var s = entry.fullPath + "?version=" + new Date().getTime();;
-					document.getElementById("head-img").src = s;
-					document.getElementById("head-img1").src = s;
-				}, function(e) {
-					document.getElementById("head-img").src = '${contextpath}/images/logo.png';
-					document.getElementById("head-img1").src = '${contextpath}/images/logo.png';
-				})
-			} else {
-				document.getElementById("head-img").src = '${contextpath}/images/logo.png';
-				document.getElementById("head-img1").src = '${contextpath}/images/logo.png';
-			}
-		}
-		document.getElementById("head-img1").addEventListener('tap', function(e) {
-			e.stopPropagation();
-		});
-		document.getElementById("welcome").addEventListener('tap', function(e) {
-			//显示启动导航
-			mui.openWindow({
-				id: 'guide',
-				url: 'guide.html',
-				show: {
-					aniShow: 'fade-in',
-					duration: 300
-				},
-				waiting: {
-					autoShow: false
-				}
-			});
-		});
-
-		function initImgPreview() {
-			var imgs = document.querySelectorAll("img.mui-action-preview");
-			imgs = mui.slice.call(imgs);
-			if (imgs && imgs.length > 0) {
-				var slider = document.createElement("div");
-				slider.setAttribute("id", "__mui-imageview__");
-				slider.classList.add("mui-slider");
-				slider.classList.add("mui-fullscreen");
-				slider.style.display = "none";
-				slider.addEventListener("tap", function() {
-					slider.style.display = "none";
-				});
-				slider.addEventListener("touchmove", function(event) {
-					event.preventDefault();
-				})
-				var slider_group = document.createElement("div");
-				slider_group.setAttribute("id", "__mui-imageview__group");
-				slider_group.classList.add("mui-slider-group");
-				imgs.forEach(function(value, index, array) {
-					//给图片添加点击事件，触发预览显示；
-					value.addEventListener('tap', function() {
-						slider.style.display = "block";
-						_slider.refresh();
-						_slider.gotoItem(index, 0);
-					})
-					var item = document.createElement("div");
-					item.classList.add("mui-slider-item");
-					var a = document.createElement("a");
-					var img = document.createElement("img");
-					img.setAttribute("src", value.src);
-					a.appendChild(img)
-					item.appendChild(a);
-					slider_group.appendChild(item);
-				});
-				slider.appendChild(slider_group);
-				document.body.appendChild(slider);
-				var _slider = mui(slider).slider();
-			}
-		}
+		 
 		function logout(){
 			 $.ajax({
 					type: "post", 
