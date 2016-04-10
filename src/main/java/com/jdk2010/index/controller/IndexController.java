@@ -292,6 +292,11 @@ public class IndexController extends BaseController {
 		} else {
 			// 活动
 			Map<String, Object> data = (Map<String, Object>) member.get("data");
+			String birthday = (String) data.get("dbirthday");
+			if (birthday != null) {
+				String dbirthday = ZjjMsgUtil.transdate(birthday);
+				setAttr("dbirthday", dbirthday);
+			}
 			String memberid = data.get("id") + "";
 			List<MemberActivity> activityList = dalClient
 					.queryForObjectList(
@@ -332,8 +337,9 @@ public class IndexController extends BaseController {
 		Map<String, Object> member = getSessionAttr("member");
 		System.out.println("member:" + member);
 		if (member == null) {
-			return "/login";
+			return REDIRECT + "/toLogin";
 		} else {
+
 			Map<String, Object> data = (Map<String, Object>) member.get("data");
 			String memberid = data.get("id") + "";
 			Integer id = Integer.parseInt(memberid);
@@ -349,13 +355,17 @@ public class IndexController extends BaseController {
 			// cemail = "";
 			String cheadimgurl = getPara("memberImage1");
 			if (StringUtil.isNotBlank(cheadimgurl)) {
-
-				String path = request.getRealPath("/");
-				String imgName = UUID.randomUUID().toString() + ".jpeg";
-				com.jdk2010.util.ImageUtils.decodeBase64ToImage(
-						cheadimgurl.split(",")[1], path, imgName);
-				System.out.println("path + imgName:" + path + imgName);
-				cheadimgurl = QiniuUtil.upload(path + imgName);
+				
+				String path = request.getRealPath("/")+"headimg/";
+				String type=cheadimgurl.split(",")[0].split(";")[0].split("/")[1];
+				String imgName = UUID.randomUUID().toString()+"."+type;
+				com.jdk2010.util.ImageUtils.decodeBase64ToImage(cheadimgurl.split(",")[1],
+						path, imgName);
+				System.out.println("path + imgName:"+path + imgName);
+				System.out.println("cheadimgurl:"+cheadimgurl);
+				//cheadimgurl = QiniuUtil.upload(path + imgName);
+				cheadimgurl ="/headimg/" + imgName;
+				System.out.println("cheadimgurl:---"+cheadimgurl);
 			}
 			// cheadimgurl = "";
 			String returnMsg = ZjjMsgUtil.updateMember(id, cnickname, cname,
@@ -367,7 +377,7 @@ public class IndexController extends BaseController {
 				setSessionAttr("member", returnMap);
 			}
 
-			return FORWARD + "/memberCenter";
+			return REDIRECT + "/memberCenter";
 		}
 	}
 

@@ -229,7 +229,7 @@
 							<li class="mui-table-view-cell mui-media">
 								<a class="mui-navigate-right" href="#account">
 								<img class="mui-media-object mui-pull-left head-img" src="
-									<c:if test="${member.data.cheadimgurl==null }">${contextpath}/images/11.jpg</c:if><c:if test="${member.data.cheadimgurl!=null }">${member.data.cheadimgurl }</c:if>
+									<c:if test="${member.data.cheadimgurl==null }">${contextpath}/images/11.jpg</c:if><c:if test="${member.data.cheadimgurl!=null }">${contextpath}${member.data.cheadimgurl }</c:if>
 									"/>
 									<div class="mui-media-body">
 										${member.data.cname }
@@ -262,7 +262,7 @@
 		<!--单页面结束-->
 		<div id="account" class="mui-page">
 			<div class="mui-navbar-inner mui-bar mui-bar-nav">
-				<button type="button" class="mui-left mui-action-back mui-btn   mui-btn-nav " onclick="window.location.href='${contextpath}/'">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
 					<span class="mui-icon mui-icon-left-nav"></span>个人中心
 				</button>
 				<h1 class="mui-center mui-title">个人信息</h1>
@@ -275,7 +275,7 @@
 								<a id="head" >头像
 								<span class="mui-pull-right head">
 									<img style="right: 15px;" class="head-img mui-action-preview" src="
-									<c:if test="${member.data.cheadimgurl==null }">${contextpath}/images/11.jpg</c:if><c:if test="${member.data.cheadimgurl!=null }">${member.data.cheadimgurl }</c:if>
+									<c:if test="${member.data.cheadimgurl==null }">${contextpath}/images/11.jpg</c:if><c:if test="${member.data.cheadimgurl!=null }">${contextpath}${member.data.cheadimgurl }</c:if>
 									"/>
 								</span>
 							</a>
@@ -292,7 +292,10 @@
 								<a>邮箱<span class="mui-pull-right">${member.data.cemail }</span></a>
 							</li>
 							<li class="mui-table-view-cell">
-								<a>性别<span class="mui-pull-right"><c:if test="${member.data.csex==null }">未设置</c:if><c:if test="${member.data.csex!=null }">${member.data.csex }</c:if></span></a>
+								<a>性别<span class="mui-pull-right"><c:if test="${member.data.csex==null }">未设置</c:if><c:if test="${member.data.csex!=null }">${member.data.csex=='man'?'男':'女' }</c:if></span></a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a>生日<span class="mui-pull-right">${dbirthday }</span></a>
 							</li>
 						</ul>
 						 
@@ -310,13 +313,15 @@
 			<div class="mui-page-content">
 				
 				<div class="mui-scroll-wrapper">
+								 <form method="post" class="mui-input-group mui-table-view" action="${contextpath }/memberEditAction.htm" id="myform" name="myform">
+				
 					<div class="mui-scroll">
 						<ul class="mui-table-view">
 							<li class="mui-table-view-cell">
 								<a id="head" class="mui-navigate-right">头像
 								<span class="mui-pull-right head">
 									<img  class="head-img mui-action-preview" id="memberImage" name="memberImage" src="
-									<c:if test="${member.data.cheadimgurl==null }">${contextpath}/images/11.jpg</c:if><c:if test="${member.data.cheadimgurl!=null }">${member.data.cheadimgurl }</c:if>
+									<c:if test="${member.data.cheadimgurl==null }">${contextpath}/images/11.jpg</c:if><c:if test="${member.data.cheadimgurl!=null }">${contextpath}${member.data.cheadimgurl }</c:if>
 									"/>
 										<input type="file" value="" capture="camera" accept="image/*" id="cameraInput" name="cameraInput"
 										style="position:absolute;top:10px;right:50px;width:130px;height:130px;color:transparent;text-indent:-9999em"
@@ -327,7 +332,6 @@
 							</a>
 							</li>
 						</ul>
-						<form method="post" class="mui-input-group mui-table-view" action="${contextpath }/memberEditAction.htm" id="myform" name="myform">
 							<div class="mui-input-row">
 								<label>真实姓名</label>
 								<input type="text" placeholder="" name="cname" id="cname" value="${member.data.cname }" >
@@ -342,7 +346,7 @@
 							</div>
 							<div class="mui-input-row">
 								<label>生日</label>
-								<button id='demo1' data-options='{}' class="btn mui-btn mui-btn-block">选择日期时间 ...</button>
+								<input type="text"  id="dbirthday" name="dbirthday" value="${dbirthday }"/>
  							</div>
 							
 							<br/>
@@ -454,18 +458,54 @@
 		</div>
 	</body>
 	<script src="${contextpath}/js/mui.min.js "></script>
-	<script src="${contextpath}/js/mui.dtpicker.js"></script>-->
-		<script src="${contextpath}/js/mui.picker.min.js"></script>
+ 
+	<script src="${contextpath}/js/mui.picker.min.js"></script>
 	<script src="${contextpath}/js/mui.view.js "></script>
 	<script src="${contextpath}/js/jquery.min.js"></script>
 		<script src="${contextpath}/js/layer/layer.js"></script>
 		<script src="${contextpath}/js/common.js"></script>
 		<script src="${contextpath}/js/MegaPixImage.js" type="text/javascript"></script>
 		<script src="${contextpath}/js/exif.min.js" type="text/javascript"></script>
+		<link href="${contextpath }/css/mobiscroll.css" rel="stylesheet" type="text/css" />
+    <script src="${contextpath }/js/mobiscroll.js" type="text/javascript"></script>
 	<!--<script src='${contextpath}/js/feedback.js'></script>
 	<script src="${contextpath}/js/feedback-page.js"></script>-->
+	 <script type="text/javascript" src="http://zeptojs.com/zepto.js"></script>
+	  <script src="${contextpath }/js/mobiscroll.zepto.js" type="text/javascript"></script>
+    <script src="${contextpath }/js/mobiscroll.core.js" type="text/javascript"></script>
+
+    <script src="${contextpath }/js/mobiscroll.datetime.js" type="text/javascript"></script>
+
+    <script src="${contextpath }/js/mobiscroll.android.js" type="text/javascript"></script>
+
+    <script src="${contextpath }/js/i18n/mobiscroll.zh.js" type="text/javascript"></script>
+
+    <link href="${contextpath }/css/mobiscroll.core.css" rel="stylesheet" type="text/css" />
+    <link href="${contextpath }/css/mobiscroll.android.css" rel="stylesheet" type="text/css" />
 	<script>
-		
+	  $(function () {
+          var curr = new Date().getFullYear();
+          var opt = {
+              'date': {
+                  preset: 'date',
+                  dateOrder: 'yymmdd',
+                  setText: '确定', //确认按钮名称
+                  cancelText: '取消',//取消按钮名籍我
+					dateFormat:"yyyy-mm-dd",
+                  invalid: { daysOfWeek: [0, 1], daysOfMonth: ['5/1', '12/24', '12/25'] }
+              } 
+          }
+			
+          $("#dbirthday").scroller('destroy').scroller($.extend(opt['date'], {
+              theme: 'android',
+              mode: 'mixed',
+              lang: 'zh',
+              display: 'modal',
+              animate: ''
+          })); 
+      });
+
+	
 	jQuery(document).ready(function() {
 		  var fileInput = document.getElementById('cameraInput');
 	      fileInput.onchange = function () {
@@ -482,7 +522,7 @@
 	              
 	          }); 
 	          setTimeout(function(){
-	        	  alert(resCanvas1.toDataURL());
+	        	 // alert(resCanvas1.toDataURL());
 	        	  $("#memberImage").attr("src",resCanvas1.toDataURL());
 	        	  $("#memberImage1").val(resCanvas1.toDataURL());
 	          },200);
@@ -523,47 +563,7 @@
 			});
 		})(mui);
 		 
-		(function($) {
-			$.init();
-			var result = $('#result')[0];
-			var btns = $('.btn');
-			btns.each(function(i, btn) {
-				btn.addEventListener('tap', function() {
-					var optionsJson = this.getAttribute('data-options') || '{}';
-					var options = JSON.parse(optionsJson);
-					var id = this.getAttribute('id');
-					/*
-					 * 首次显示时实例化组件
-					 * 示例为了简洁，将 options 放在了按钮的 dom 上
-					 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
-					 */
-					var picker = new $.DtPicker(options);
-					picker.show(function(rs) {
-						/*
-						 * rs.value 拼合后的 value
-						 * rs.text 拼合后的 text
-						 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
-						 * rs.m 月，用法同年
-						 * rs.d 日，用法同年
-						 * rs.h 时，用法同年
-						 * rs.i 分（minutes 的第二个字母），用法同年
-						 */
-						result.innerText = '选择结果: ' + rs.text;
-						/* 
-						 * 返回 false 可以阻止选择框的关闭
-						 * return false;
-						 */
-						/*
-						 * 释放组件资源，释放后将将不能再操作组件
-						 * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
-						 * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
-						 * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
-						 */
-						picker.dispose();
-					});
-				}, false);
-			});
-		})(mui);
+	 
 		 
 
 		
@@ -597,7 +597,19 @@
 			window.location.href="${contextpath}/activityDetail.htm?id="+id;
 		}
 		function submitform(){
+			var cemail = $("#cemail").val();
+			var filter  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			if(!filter.test(cemail)){
+				layer.open({
+					content: '邮箱格式不正确,请重新输入！',
+					btn: ['确定']
+				});
+				return false;
+			}
 			$("#myform").submit();
+		}
+		function showDate(){
+			 
 		}
 	</script>
 

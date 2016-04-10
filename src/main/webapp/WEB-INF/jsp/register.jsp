@@ -110,6 +110,7 @@
 	<script type="text/javascript">
 	function sendCode() {
 		var mobile = $("#mobile").val();
+		  
 		if (trim(mobile) == '') {
 			layer.open({
 			    content: '请输入手机号码！',
@@ -184,14 +185,22 @@
 		var verifyCode = $("#verifyCode").val();
 		var cpassword = $("#cpassword").val();
 		var cpassword1=$("#cpassword1").val();
+		
 		if(cpassword!=cpassword1){
 			layer.open({
 			    content: '两次密码不一致,请重新输入！',
 			    btn: ['确定']
 			});
 			return false;
+		}else if (trim(cpassword).length<6) {
+			layer.open({
+			    content: '密码最低长度6位！',
+			    btn: ['确定']
+			});
+			return false;
 		}
-		if (trim(mobile) == '') {
+		
+		else if (trim(mobile) == '') {
 			layer.open({
 			    content: '请输入手机号码！',
 			    btn: ['确定']

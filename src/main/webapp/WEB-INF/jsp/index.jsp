@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 
@@ -90,20 +91,39 @@
 			<div id="slider" class="mui-slider">
 				<div class="mui-slider-group mui-slider-loop">
 					
-					 <c:forEach items="${advList }" var="adv">
+					 <c:forEach items="${advList }" var="adv"   varStatus="status">
+					 <c:set value="${fn:length(advList)-1}" var="advlength"></c:set>
+					 <c:if test="${status.index==0}">
+					    <div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="${advList[advlength].jumpWapUrl }">
+							<img src="${advList[advlength].imgUrl }-mindex">
+							<p class="mui-slider-title">${advList[advlength].title }</p>
+						</a>
+						</div>
+						</c:if>
 					<div class="mui-slider-item">
-						<a href="${adv.jumpUrl }">
-							<img src="${adv.imgUrl }">
+						 
+						<a href="${adv.jumpWapUrl }">
+							<img src="${adv.imgUrl }-mindex">
 							<p class="mui-slider-title">${adv.title }</p>
 						</a>
 					</div>
+					
+					<c:if test="${status.index==advlength}">
+					    <div class="mui-slider-item mui-slider-item-duplicate">
+						<a href="${advList[0].jumpWapUrl }">
+							<img src="${advList[0].imgUrl }-mindex">
+							<p class="mui-slider-title">${advList[0].title }</p>
+						</a>
+						</div>
+						</c:if>
+					
 					 </c:forEach>
 				</div>
 				<div class="mui-slider-indicator mui-text-right">
-					<div class="mui-indicator mui-active"></div>
+				 <c:forEach items="${advList }" var="adv"   varStatus="status">
 					<div class="mui-indicator"></div>
-					<div class="mui-indicator"></div>
-					<div class="mui-indicator"></div>
+				 </c:forEach>
 				</div>
 			</div>
 			<!--畅游张家界-->
@@ -227,10 +247,11 @@
 				console.log('hidden', e.detail.id); //detail为当前popover元素
 			});
 			var slider = mui("#slider");
+			//slider.slider().gotoItem(0);
 			//			document.getElementById("switch").addEventListener('toggle', function(e) {
 			//				if (e.detail.isActive) {
 			slider.slider({
-				interval: 5000
+				interval: 3000
 			});
 			function jumpChangyouDetail(id){
 				window.location.href='${contextpath}/changyouDetail.htm?id='+id;
