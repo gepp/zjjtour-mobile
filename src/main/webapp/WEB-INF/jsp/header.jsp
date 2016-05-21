@@ -38,7 +38,7 @@
 								 
 							</ul>
 						</li>
-						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">休闲</a>
+						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">印象</a>
 							<ul class="mui-table-view mui-table-view-chevron">
 								<c:forEach var="menu"  items="${xiuxianMenuList }">
 								<li class="mui-table-view-cell"  onclick="jumpXiuxian('${menu.id}')"><a class="mui-navigate-right" href="#">${menu.name }</a>
@@ -46,11 +46,21 @@
 								 </c:forEach>
 							</ul>
 						</li>
-						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/memberCenter.htm'"><a class="mui-navigate-right" href="#">游客中心</a>
+						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath }/about.htm?secondMenuId=1118'"><a class="mui-navigate-right" href="#">会员中心</a>
 						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/tousu.htm'"><a class="mui-navigate-right" href="#">投诉中心</a>
 						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/chengxin.htm'"><a class="mui-navigate-right" href="#">诚信中心</a>
-						
 						</li>
+						<c:forEach var="newMap" items="${newsMap }">
+						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">${newMap.key.name }</a>
+							<ul class="mui-table-view mui-table-view-chevron">
+								<c:forEach var="menu"  items="${newMap.value }">
+								<li class="mui-table-view-cell"  onclick="jumpOther('${menu.id}','${newMap.key.id }');"><a class="mui-navigate-right" href="#">${menu.name }</a>
+								</li>
+								 </c:forEach>
+							</ul>
+						</li>
+						</c:forEach>
+						
 					</ul>
 				</div>
 			</div>
@@ -90,5 +100,10 @@
 		function jumpQuanjing(secondMenuId){
 			window.location.href="${contextpath}/quanjing.htm?secondMenuId="+secondMenuId;
 		}
+		function jumpOther(secondMenuId,otherId){
+			var currentId="";
+			window.location.href="${contextpath}/other.htm?currentId="+currentId+"&otherId="+otherId+'&secondMenuId='+secondMenuId;
+		}
+		
 		</script>
 </html>

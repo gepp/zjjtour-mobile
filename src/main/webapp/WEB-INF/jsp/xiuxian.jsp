@@ -49,28 +49,18 @@
 		</header>
 		<div class="mui-content">
 			<div class="mui-content-padded">
-				<div class="mui-btn <c:if test="${secondMenuId==''}"> mui-btn-primary</c:if> "  onclick="jumpXiuxian('')">
-					全部
-				</div>
-			<c:forEach var="menu" items="${secondMenuList }">
+ 			<c:forEach var="menu" items="${secondMenuList }">
 				<div class="mui-btn <c:if test="${secondMenuId==menu.id}"> mui-btn-primary</c:if>" onclick="jumpXiuxian('${menu.id}')">
 				${menu.name }
 				</div>
 			</c:forEach>
 			</div>
-			<ul class="mui-table-view">
-				<c:forEach var="item" items="${newsList }">
-				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}')">
-					<a href="javascript:;">
-						<img class="mui-media-object mui-pull-left" src="${item.indeximg } ">
-						<div class="mui-media-body">
-							${item.title }
-							<p class="mui-ellipsis">${item.abstract_content }</p>
-						</div>
-					</a>
-				</li>
-				</c:forEach>
-			</ul>
+			 <div class="mui-content">
+			<h4 class="mui-h4"></h4>
+			<div class="mui-content-padded">
+				${securityNews.content }
+			</div>
+		</div>
 		</div>
 		<div id="footer"></div>
 		<!--右上角弹出菜单-->

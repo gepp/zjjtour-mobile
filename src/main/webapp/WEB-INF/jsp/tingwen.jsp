@@ -14,8 +14,7 @@
 		<!--标准mui.css-->
 		<link rel="stylesheet" href="${contextpath}/css/mui.min.css">
 		<!--App自定义的css-->
-		<link rel="stylesheet" type="text/css" href="${contextpath}/css/app.css" />
-		<style>
+			<style>
 			h5 {
 				padding-top: 8px;
 				padding-bottom: 8px;
@@ -38,6 +37,11 @@
 			}
 			.mui-grid-view.mui-grid-9 .mui-table-view-cell{border: none;}
 			.mui-media .iconfont{color: #00BB9E; font-size: 2em;}
+			
+			.leader>li>a>img{width: 60%; display: block; margin: 0 auto;}
+			.mui-table-view-cell:after{left: 0;}
+			.mui-table-view .mui-media, .mui-table-view .mui-media-body{padding-top: 15px; text-align: center;}
+			.mui-ellipsis{margin-top: 10px;}
 		</style>
 	</head>
 
@@ -58,19 +62,33 @@
 				</div>
 			</c:forEach>
 			</div>
-			<ul class="mui-table-view">
-				<c:forEach var="item" items="${newsList }">
+			<ul class="mui-table-view" id="changeSpan">
+				<c:forEach items="${pageList.list }" var="item">
 				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}')">
 					<a href="javascript:;">
-						<img class="mui-media-object mui-pull-left" src="${item.indeximg } ">
-						<div class="mui-media-body">
+						<img class="mui-media-object mui-pull-left" src="${item.smallimg } ">
+						<div class="mui-media-body" style="white-space:nowrap;text-overflow:ellipsis;text-align:left">
 							${item.title }
-							<p class="mui-ellipsis">${item.abstract_content }</p>
+							<p class="mui-ellipsis">${item.abstractContent }</p>
 						</div>
 					</a>
 				</li>
 				</c:forEach>
 			</ul>
+			<ul class="mui-table-view leader"  id="lingdaozhichuang" style="display:none">
+				<c:forEach var="lingdao" items="${lingdaoList }">
+				<li class="mui-table-view-cell mui-media" onclick="gotoLingdao('${lingdao.id}')">
+					<a href="javascript:;">
+						<img src="${lingdao.img }">
+						<div class="mui-media-body">
+							${lingdao.name }
+							<p class="mui-ellipsis">${lingdao.code }</p>
+						</div>
+					</a>
+				</li>
+				</c:forEach>
+			</ul>
+			
 		</div>
 		<div id="footer"></div>
 		<!--右上角弹出菜单-->
@@ -82,7 +100,18 @@
 	jQuery(document).ready(function() {
 		$("#header").load("${contextpath}/header.htm?type=index");
 		/* $("#footer").load("${contextpath}/footer.htm"); */
+		if('${secondMenuId}'=='1108'){
+			 
+			$("#changeSpan").hide();
+			$("#lingdaozhichuang").show();
+		}
 	});
+	function gotoLingdao(id){
+		window.location.href='${contextpath}/lingdaoDetail.htm?id='+id;
+	}
+	function jumpDetail(id){
+		window.location.href='${contextpath}/tingwenDetail.htm?id='+id;
+	}
 		mui.init({
 			swipeBack: true //启用右滑关闭功能
 		});

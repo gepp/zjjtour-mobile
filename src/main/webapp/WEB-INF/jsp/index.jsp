@@ -154,7 +154,7 @@
 			
 			<!--畅游张家界 end-->
 			<!--休闲张家界-->
-			<h5>休闲张家界<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/xiuxian.htm'">更多</span></h5>
+			<h5>印象<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/xiuxian.htm?secondMenuId=1091'">更多</span></h5>
 			<ul class="mui-table-view mui-table-view-chevron">
 				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${meishiMenu.id}');">
 					<a class="mui-navigate-right">
@@ -215,7 +215,7 @@
 				<li class="mui-table-view-cell" onclick="jumpTingwenDetail('${tingwen.id}')">
 					<div class="mui-table">
 						<div class="mui-table-cell mui-col-xs-10">
-							<h4 class="mui-ellipsis-2">${tingwen.title }</h4>
+							<h4 class="mui-ellipsis" style="white-space:nowrap;text-overflow:ellipsis">${tingwen.title }</h4>
 							<fmt:formatDate value="${tingwen.ctime }" pattern="yyyy-MM-dd" var="ctime"/>
 							<h5 class="mui-h6">发布时间：${ctime }</h5>
 							<p class="mui-h5 mui-ellipsis">${tingwen.abstractContent }</p>

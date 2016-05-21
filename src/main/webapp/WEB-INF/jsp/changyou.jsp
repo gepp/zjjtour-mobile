@@ -62,8 +62,8 @@
 				<c:forEach var="item" items="${newsList }">
 				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}')">
 					<a href="javascript:;">
-						<img class="mui-media-object mui-pull-left" src="${item.indeximg } ">
-						<div class="mui-media-body">
+						<img class="mui-media-object mui-pull-left" src="${item.smallimg } ">
+						<div class="mui-media-body" style="white-space:nowrap;text-overflow:ellipsis">
 							${item.title }
 							<p class="mui-ellipsis">${item.abstract_content }</p>
 						</div>

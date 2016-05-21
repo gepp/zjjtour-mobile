@@ -63,7 +63,7 @@
 				<c:forEach var="item" items="${quanjingList }">
 				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}')">
 					<a href="javascript:;">
-						<img class="mui-media-object mui-pull-left" src="${item.indeximg } ">
+						<img class="mui-media-object mui-pull-left" src="${item.smallimg } ">
 						<div class="mui-media-body">
 							${item.title }
 							<p class="mui-ellipsis">${item.abstract_content }</p>

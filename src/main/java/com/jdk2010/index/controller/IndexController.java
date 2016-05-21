@@ -1,6 +1,7 @@
 package com.jdk2010.index.controller;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -124,22 +125,22 @@ public class IndexController extends BaseController {
 		setAttr("tingwenList", tingwenList);
 
 		SecurityMenu meishiMenu = dalClient
-				.queryForObject("select * from security_menu where id=1059",
+				.queryForObject("select * from security_menu where id=1091",
 						SecurityMenu.class);
 		setAttr("meishiMenu", meishiMenu);
 
 		SecurityMenu jiudianMenu = dalClient
-				.queryForObject("select * from security_menu where id=1061",
+				.queryForObject("select * from security_menu where id=1093",
 						SecurityMenu.class);
 		setAttr("jiudianMenu", jiudianMenu);
 
 		SecurityMenu jingdianMenu = dalClient
-				.queryForObject("select * from security_menu where id=1060",
+				.queryForObject("select * from security_menu where id=1094",
 						SecurityMenu.class);
 		setAttr("jingdianMenu", jingdianMenu);
 
 		SecurityMenu menpiaoMenu = dalClient
-				.queryForObject("select * from security_menu where id=1062",
+				.queryForObject("select * from security_menu where id=1095",
 						SecurityMenu.class);
 		setAttr("menpiaoMenu", menpiaoMenu);
 
@@ -151,22 +152,22 @@ public class IndexController extends BaseController {
 			HttpServletResponse response) throws Exception {
 
 		List<SecurityMenu> quanjingMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1011",
+				"select * from security_menu where parent_id=1011 and status=1 order by orderlist asc",
 				SecurityMenu.class);
 		setAttr("quanjingMenuList", quanjingMenuList);
 
 		List<SecurityMenu> changyouMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1010",
+				"select * from security_menu where parent_id=1010 and status=1 order by orderlist asc",
 				SecurityMenu.class);
 		setAttr("changyouMenuList", changyouMenuList);
 
 		List<SecurityMenu> tingwenMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1037",
+				"select * from security_menu where parent_id=1037 and status=1 order by orderlist asc",
 				SecurityMenu.class);
 		setAttr("tingwenMenuList", tingwenMenuList);
 
 		List<SecurityMenu> xiuxianMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1058",
+				"select * from security_menu where parent_id=1058 and status=1 order by orderlist asc",
 				SecurityMenu.class);
 		setAttr("xiuxianMenuList", xiuxianMenuList);
 
@@ -177,11 +178,21 @@ public class IndexController extends BaseController {
 		String type = getPara("type");
 		setAttr("type", type);
 
-		List<SystemSearchword> wordList = dalClient
-				.queryForObjectList(
-						"select * from system_searchword where status=1 order by orderlist ",
-						SystemSearchword.class);
-		setAttr("wordList", wordList);
+		List<SecurityMenu> otherNewsMenuList = dalClient.queryForObjectList(
+				"select * from security_menu where parent_id=0 and page_type=1 and  status=1 order by orderlist asc",
+				SecurityMenu.class);
+		setAttr("otherNewsMenuList", otherNewsMenuList);
+
+		Map<Object,Object> newsMap=new LinkedHashMap<Object, Object>();
+		for(SecurityMenu menu:otherNewsMenuList){
+			List<SecurityMenu> secondMenuList = dalClient.queryForObjectList(
+					"select * from security_menu where parent_id="+menu.getId()+" and page_type=1 and status=1 order by orderlist asc",
+					SecurityMenu.class);
+			newsMap.put(menu, secondMenuList);
+		}
+		
+		setAttr("newsMap", newsMap);
+ 
 
 		return "/header";
 	}
