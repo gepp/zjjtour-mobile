@@ -9,7 +9,7 @@
 				<div class="mui-scroll">
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell" onclick="window.location.href='${contextpath}/'"><a class="mui-navigate-right" href="#">首页</a></li>
-						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">全景</a>
+						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">${quanjing.name }</a>
 							<ul class="mui-table-view mui-table-view-chevron">
 								<c:forEach var="menu"  items="${quanjingMenuList }">
 								<li class="mui-table-view-cell" onclick="jumpQuanjing('${menu.id}')"><a class="mui-navigate-right" href="#">${menu.name }</a>
@@ -18,7 +18,7 @@
 							</ul>
 						</li>
 						
-						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">畅游</a>
+						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">${changyou.name }</a>
 							<ul class="mui-table-view mui-table-view-chevron">
 								<c:forEach var="menu"  items="${changyouMenuList }">
 								<li class="mui-table-view-cell" onclick="jumpChangyou('${menu.id}')"><a class="mui-navigate-right" href="#">${menu.name }</a>
@@ -26,10 +26,10 @@
 								 </c:forEach>
 							</ul>
 						</li>
-						<li class="mui-table-view-cell" onclick="window.location.href='${contextpath}/activity.htm'"><a class="mui-navigate-right" href="#">娱乐</a>
+						<li class="mui-table-view-cell" onclick="window.location.href='${contextpath}/activity.htm'"><a class="mui-navigate-right" href="#">${activity.name }</a>
 							
 						</li>
-						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">听闻</a>
+						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">${tingwen.name }</a>
 							<ul class="mui-table-view mui-table-view-chevron">
 								<c:forEach var="menu"  items="${tingwenMenuList }">
 								<li class="mui-table-view-cell" onclick="jumpTingwen('${menu.id}')"><a class="mui-navigate-right" href="#">${menu.name }</a>
@@ -38,7 +38,7 @@
 								 
 							</ul>
 						</li>
-						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">印象</a>
+						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">${xiuxian.name }</a>
 							<ul class="mui-table-view mui-table-view-chevron">
 								<c:forEach var="menu"  items="${xiuxianMenuList }">
 								<li class="mui-table-view-cell"  onclick="jumpXiuxian('${menu.id}')"><a class="mui-navigate-right" href="#">${menu.name }</a>

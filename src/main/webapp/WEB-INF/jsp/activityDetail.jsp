@@ -233,7 +233,7 @@
 			<div class="mui-content-padded">
 
 				<p>
-					<img src="${contextpath}/images/yuantiao.jpg" data-preview-src="" data-preview-group="1" />
+					<img src="${activity.smallimg }" data-preview-src="" data-preview-group="1" />
 				</p>
 				<h4 class="mui-h4">${activity.title }</h4>
 				<fmt:formatDate value="${activity.startTime }" pattern="yyyy-MM-dd" var="startTime"/>

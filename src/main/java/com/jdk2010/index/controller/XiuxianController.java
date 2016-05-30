@@ -60,15 +60,15 @@ public class XiuxianController extends BaseController {
         //畅游的新闻
         List<Map<String,Object>> newsList;
         if(secondMenuId!=""){
-            newsList=dalClient.queryForObjectList("select * from security_news where menu_id="+secondMenuId+" and review_status=1 order by orderlist asc");
+            newsList=dalClient.queryForObjectList("select * from security_news where menu_id="+secondMenuId+" and review_status=1  order by orderlist asc,ctime desc");
             SecurityMenu thirdShowMenu=   dalClient.findById(secondMenuId,SecurityMenu.class);
             thirdShowName=thirdShowMenu.getName();
         }else{
         	thirdShowName="全部";
-             newsList=dalClient.queryForObjectList("select * from security_news where  review_status=1 and menu_id in (select id from security_menu where  parent_id=1058) order by orderlist asc");
+             newsList=dalClient.queryForObjectList("select * from security_news where  review_status=1 and menu_id in (select id from security_menu where  parent_id=1058) order by orderlist asc ,ctime desc");
          }
         setAttr("thirdShowName", thirdShowName);
-        SecurityNews securityNews=dalClient.queryForObject("select * from security_news where menu_id="+secondMenuId+"",SecurityNews.class);
+        SecurityNews securityNews=dalClient.queryForObject("select * from security_news where menu_id="+secondMenuId+" and review_status=1  order by orderlist asc,ctime desc",SecurityNews.class);
 		setAttr("securityNews", securityNews);
         return "/xiuxian" ;
     }

@@ -127,7 +127,7 @@
 				</div>
 			</div>
 			<!--畅游张家界-->
-			<h5>全景<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/quanjing.htm'">更多</span></h5>
+			<h5>${quanjing.name }<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/quanjing.htm'">更多</span></h5>
 			<ul class="mui-table-view mui-grid-view">
 				<c:forEach items="${quanjingList }" var="quanjing">
 				<li class="mui-table-view-cell mui-media mui-col-xs-6">
@@ -138,11 +138,11 @@
 				</li>
 				 </c:forEach>
 			</ul>
-			<h5>畅游张家界<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/changyou.htm'">更多</span></h5>
+			<h5>${changyou.name }<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/changyou.htm'">更多</span></h5>
 			<ul class="mui-table-view mui-grid-view">
 				<c:forEach items="${changyouList }" var="changyou">
 				<li class="mui-table-view-cell mui-media mui-col-xs-6">
-					<a href="javascript:void(0)"  onclick="jumpChangyouDetail('${changyou.id}')">
+					<a href="javascript:void(0)"  onclick="jumpChangyouDetail('${changyou.id}','${changyou.jumpType }','${changyou.url }')">
 						<img class="mui-media-object" src="${changyou.indeximg }">
 						<div class="mui-media-body">${changyou.title }</div>
 					</a>
@@ -154,7 +154,7 @@
 			
 			<!--畅游张家界 end-->
 			<!--休闲张家界-->
-			<h5>印象<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/xiuxian.htm?secondMenuId=1091'">更多</span></h5>
+			<h5>${xiuxian.name }<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/xiuxian.htm?secondMenuId=1091'">更多</span></h5>
 			<ul class="mui-table-view mui-table-view-chevron">
 				<li class="mui-table-view-cell mui-media" onclick="jumpXiuxiansecond('${meishiMenu.id}');">
 					<a class="mui-navigate-right">
@@ -196,7 +196,7 @@
 			<!--休闲张家界 end-->
 
 			<!--娱乐张家界-->
-			<h5>娱乐张家界 <span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/activity.htm'">更多</span></h5>
+			<h5>${activity.name }<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/activity.htm'">更多</span></h5>
 			<ul class="mui-table-view mui-grid-view">
 				<c:forEach var="yule" items="${activityList }">
 				<li class="mui-table-view-cell mui-media mui-col-xs-12" onclick="jumpActivityDetail('${yule.id}')">
@@ -209,10 +209,10 @@
 			</ul>
 			<!--娱乐张家界 end-->
 			<!--听闻张家界-->
-			<h5>听闻张家界<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/tingwen.htm'">更多</span></h5>
+			<h5>${tingwen.name }<span style="float:right;margin-right: 12px;font-weight: normal;" onclick="window.location.href='${contextpath}/tingwen.htm'">更多</span></h5>
 			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
 				<c:forEach var="tingwen" items="${tingwenList }">
-				<li class="mui-table-view-cell" onclick="jumpTingwenDetail('${tingwen.id}')">
+				<li class="mui-table-view-cell" onclick="jumpTingwenDetail('${tingwen.id}','${tingwen.jumpType }','${tingwen.url }')">
 					<div class="mui-table">
 						<div class="mui-table-cell mui-col-xs-10">
 							<h4 class="mui-ellipsis" style="white-space:nowrap;text-overflow:ellipsis">${tingwen.title }</h4>
@@ -235,6 +235,26 @@
 		<script src="${contextpath}/js/mui.min.js"></script>
 		<script src="${contextpath}/js/jquery.min.js"></script>
 		<script>
+		/**
+		*/
+		String.prototype.endWith=function(s){ 
+		if(s==null||s==""||this.length==0||s.length>this.length) 
+		return false; 
+		if(this.substring(this.length-s.length)==s) 
+		return true; 
+		else 
+		return false; 
+		return true; 
+		} 
+		String.prototype.startWith=function(s){ 
+		if(s==null||s==""||this.length==0||s.length>this.length) 
+		return false; 
+		if(this.substr(0,s.length)==s) 
+		return true; 
+		else 
+		return false; 
+		return true; 
+		} 
 		jQuery(document).ready(function() {
 			$("#header").load("${contextpath}/header.htm?type=index");
 			$("#footer").load("${contextpath}/footer.htm");
@@ -253,14 +273,60 @@
 			slider.slider({
 				interval: 3000
 			});
-			function jumpChangyouDetail(id){
-				window.location.href='${contextpath}/changyouDetail.htm?id='+id;
-			}
+			 
+			
 			function jumpQuanjingDetail(id){
 				window.location.href='${contextpath}/quanjingDetail.htm?id='+id;
 			}
-			function jumpTingwenDetail(id){
-				window.location.href='${contextpath}/tingwenDetail.htm?id='+id;
+			function jumpChangyouDetail(id,jumpType,url){
+				if(url==''){
+					if(jumpType=='0'){
+						window.open('${contextpath}/changyouDetail.htm?id='+id);
+					}else{
+						window.location.href='${contextpath}/changyouDetail.htm?id='+id;
+					}
+					}else{
+						if(jumpType=='0'){
+							if(url.startWith('http')){
+								window.open(url);
+							}else{
+								window.open("${contextpath}/"+url);
+							}
+							 
+						}else{
+							if(url.startWith('http')){
+								window.location.href=url;
+							}else{
+								window.location.href="${contextpath}/"+url;
+							}
+							
+						}
+			}
+			}
+			function jumpTingwenDetail(id,jumpType,url){
+				if(url==''){
+					if(jumpType=='0'){
+						window.open('${contextpath}/tingwenDetail.htm?id='+id);
+					}else{
+						window.location.href='${contextpath}/tingwenDetail.htm?id='+id;
+					}
+				}else{
+					if(jumpType=='0'){
+						if(url.startWith('http')){
+							window.open(url);
+						}else{
+							window.open("${contextpath}/"+url);
+						}
+						 
+					}else{
+						if(url.startWith('http')){
+							window.location.href=url;
+						}else{
+							window.location.href="${contextpath}/"+url;
+						}
+						
+					}
+				}
 			}
 			function jumpXiuxiansecond(secondMenuId){
 				window.location.href="${contextpath}/xiuxian.htm?secondMenuId="+secondMenuId;

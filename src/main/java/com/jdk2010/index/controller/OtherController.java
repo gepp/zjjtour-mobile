@@ -52,7 +52,7 @@ public class OtherController extends BaseController {
 			throws Exception {
 		String otherId = getPara("otherId");
 		List<SecurityMenu> otherMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=" + otherId,
+				"select * from security_menu where parent_id=" + otherId+"  order by orderlist asc",
 				SecurityMenu.class);
 		setAttr("otherMenuList", otherMenuList);
 

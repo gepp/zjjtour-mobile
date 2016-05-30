@@ -44,7 +44,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<button onclick="window.location.href='${contextpath}/'" class=" mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
-			<h1 class="mui-title">诚信中心</h1>
+			<h1 class="mui-title">${chengxin.name }</h1>
 			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" style="margin: 0 -10px 0 0;" href="#middlePopover"></a>
 		</header>
 		<div class="mui-content">

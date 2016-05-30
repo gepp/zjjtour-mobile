@@ -55,8 +55,8 @@ public class ActivityController extends BaseController {
         Map<String,Object>  indexMap=dalClient.queryForObject("select * from system_indexsetting");
         setAttr("indexMap", indexMap);
         
-        SecurityMenu menu=dalClient.queryForObject("select * from security_menu where id=1058" ,SecurityMenu.class);
-        setAttr("xiuxian", menu);
+        SecurityMenu menu=dalClient.queryForObject("select * from security_menu where id=1050" ,SecurityMenu.class);
+        setAttr("activity", menu);
       
         String activityStatus=getPara("activityStatus");
         String conditionSql="";

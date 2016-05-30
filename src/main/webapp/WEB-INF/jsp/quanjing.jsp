@@ -43,12 +43,11 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<button onclick="window.location.href='${contextpath}/'" class=" mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
-			<h1 class="mui-title">全景</h1>
+			<h1 class="mui-title">${secondMen.name }</h1>
 			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" style="margin: 0 -10px 0 0;" href="#middlePopover"></a>
 		</header>
 		<div class="mui-content">
 			<div class="mui-content-padded">
-				 
 			<c:forEach var="secondMenu" items="${secondMenuList }">
 				<div <c:if test="${secondMenu.id==secondMenuId}">class="mui-btn mui-btn-primary"</c:if>
 					<c:if test="${secondMenu.id!=secondMenuId}">class="mui-btn "</c:if>
@@ -61,6 +60,18 @@
 		<input type="hidden" name="currentId" id="currentId" value="${currentId }"/>
 			<ul class="mui-table-view">
 				<c:forEach var="item" items="${quanjingList }">
+				<c:if test="${secondMenuId==1086 }">
+				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}')">
+					<a href="javascript:;">
+						<img class="mui-media-object mui-pull-left" src="${item.smallimg } ">
+						<div class="mui-media-body">
+							${item.title }
+							<p class="mui-ellipsis">${item.content }</p>
+						</div>
+					</a>
+				</li>
+				</c:if>
+				<c:if test="${secondMenuId!=1086 }">
 				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}')">
 					<a href="javascript:;">
 						<img class="mui-media-object mui-pull-left" src="${item.smallimg } ">
@@ -70,6 +81,7 @@
 						</div>
 					</a>
 				</li>
+				</c:if>
 				</c:forEach>
 			</ul>
 		</div>

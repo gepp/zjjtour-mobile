@@ -60,12 +60,14 @@
 			</div>
 			<ul class="mui-table-view">
 				<c:forEach var="item" items="${newsList }">
-				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}')">
+				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}','${item.jumpType}','${item.url}')">
 					<a href="javascript:;">
 						<img class="mui-media-object mui-pull-left" src="${item.smallimg } ">
 						<div class="mui-media-body" style="white-space:nowrap;text-overflow:ellipsis">
 							${item.title }
+							<fmt:formatDate value="${item.ctime }" pattern="yyyy-MM-dd" var="ctime"/>
 							<p class="mui-ellipsis">${item.abstract_content }</p>
+							<p class="mui-ellipsis">${ctime } &nbsp;&nbsp;<span class="number"><i class="iconfont">&#xe616;</i>${item.readtotal }</span></p>
 						</div>
 					</a>
 				</li>
@@ -79,6 +81,24 @@
 	<script src="${contextpath}/js/mui.min.js"></script>
 	<script src="${contextpath}/js/jquery.min.js"></script>
 	<script>
+	String.prototype.endWith=function(s){ 
+		if(s==null||s==""||this.length==0||s.length>this.length) 
+		return false; 
+		if(this.substring(this.length-s.length)==s) 
+		return true; 
+		else 
+		return false; 
+		return true; 
+		} 
+		String.prototype.startWith=function(s){ 
+		if(s==null||s==""||this.length==0||s.length>this.length) 
+		return false; 
+		if(this.substr(0,s.length)==s) 
+		return true; 
+		else 
+		return false; 
+		return true; 
+		} 
 	jQuery(document).ready(function() {
 		$("#header").load("${contextpath}/header.htm?type=index");
 		/* $("#footer").load("${contextpath}/footer.htm"); */
@@ -97,8 +117,30 @@
 			slider.slider({
 				interval: 5000
 			});
-			function jumpDetail(id){
-				window.location.href='${contextpath}/changyouDetail.htm?id='+id;
+			function jumpDetail(id,jumpType,url){
+				if(url==''){
+					if(jumpType=='0'){
+						window.open('${contextpath}/changyouDetail.htm?id='+id);
+					}else{
+						window.location.href='${contextpath}/changyouDetail.htm?id='+id;
+					}
+					}else{
+						if(jumpType=='0'){
+							if(url.startWith('http')){
+								window.open(url);
+							}else{
+								window.open("${contextpath}/"+url);
+							}
+							 
+						}else{
+							if(url.startWith('http')){
+								window.location.href=url;
+							}else{
+								window.location.href="${contextpath}/"+url;
+							}
+							
+						}
+			}
 			}
 		</script>
 

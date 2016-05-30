@@ -195,12 +195,23 @@
 			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" style="margin: 0 -10px 0 0;" href="#middlePopover"></a>
 		</header>
 		<div class="mui-content">
+			<c:if test="${securityNew.maodianStatus==1 }">
+				<c:forEach items="${biaoqianList }" var="biaoqian">
+	 				    <h4 class="mui-h4">${biaoqian.maodian_name }</h4>
+	 				    <div class="mui-content-padded">
+							${biaoqian.maodian_content }
+						</div>
+ 				    </c:forEach>
+			</c:if>
+			
+			<c:if test="${securityNew.maodianStatus!=1 }">	
 			<h4 class="mui-h4">${securityNew.title }</h4>
 			<fmt:formatDate value="${securityNew.ctime }" pattern="yyyy-MM-dd" var="ctime"/>
 			<h5 class="mui-h5">发布时间：${ctime }</h5>
 			<div class="mui-content-padded">
 				${securityNew.content }
 			</div>
+			</c:if>
 		</div>
 		 <div id="footer"></div>
 		<!--右上角弹出菜单-->

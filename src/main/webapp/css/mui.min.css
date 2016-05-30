@@ -4436,3 +4436,4 @@ select:focus {
     text-align: center;
     line-height: 20px;
 }
+ .mui-content-padded>p>img{width:100%};

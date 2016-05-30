@@ -64,12 +64,14 @@
 			</div>
 			<ul class="mui-table-view" id="changeSpan">
 				<c:forEach items="${pageList.list }" var="item">
-				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}')">
+				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${tingwen.id}','${tingwen.jumpType }','${tingwen.url }')">
 					<a href="javascript:;">
 						<img class="mui-media-object mui-pull-left" src="${item.smallimg } ">
 						<div class="mui-media-body" style="white-space:nowrap;text-overflow:ellipsis;text-align:left">
 							${item.title }
 							<p class="mui-ellipsis">${item.abstractContent }</p>
+							<fmt:formatDate value="${item.ctime }" pattern="yyyy-MM-dd" var="ctime"/>
+							<p class="mui-ellipsis">${ctime } &nbsp;&nbsp;<span class="number"><i class="iconfont">&#xe616;</i>${item.readtotal }</span></p>
 						</div>
 					</a>
 				</li>
@@ -97,6 +99,24 @@
 	<script src="${contextpath}/js/mui.min.js"></script>
 	<script src="${contextpath}/js/jquery.min.js"></script>
 	<script>
+	String.prototype.endWith=function(s){ 
+		if(s==null||s==""||this.length==0||s.length>this.length) 
+		return false; 
+		if(this.substring(this.length-s.length)==s) 
+		return true; 
+		else 
+		return false; 
+		return true; 
+		} 
+		String.prototype.startWith=function(s){ 
+		if(s==null||s==""||this.length==0||s.length>this.length) 
+		return false; 
+		if(this.substr(0,s.length)==s) 
+		return true; 
+		else 
+		return false; 
+		return true; 
+		} 
 	jQuery(document).ready(function() {
 		$("#header").load("${contextpath}/header.htm?type=index");
 		/* $("#footer").load("${contextpath}/footer.htm"); */
@@ -109,8 +129,30 @@
 	function gotoLingdao(id){
 		window.location.href='${contextpath}/lingdaoDetail.htm?id='+id;
 	}
-	function jumpDetail(id){
-		window.location.href='${contextpath}/tingwenDetail.htm?id='+id;
+	function jumpDetail(id,jumpType,url){
+		if(url==''){
+			if(jumpType=='0'){
+				window.open('${contextpath}/tingwenDetail.htm?id='+id);
+			}else{
+				window.location.href='${contextpath}/tingwenDetail.htm?id='+id;
+			}
+		}else{
+			if(jumpType=='0'){
+				if(url.startWith('http')){
+					window.open(url);
+				}else{
+					window.open("${contextpath}/"+url);
+				}
+				 
+			}else{
+				if(url.startWith('http')){
+					window.location.href=url;
+				}else{
+					window.location.href="${contextpath}/"+url;
+				}
+				
+			}
+		}
 	}
 		mui.init({
 			swipeBack: true //启用右滑关闭功能
