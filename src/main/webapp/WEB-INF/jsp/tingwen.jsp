@@ -64,7 +64,7 @@
 			</div>
 			<ul class="mui-table-view" id="changeSpan">
 				<c:forEach items="${pageList.list }" var="item">
-				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${tingwen.id}','${tingwen.jumpType }','${tingwen.url }')">
+				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${item.id}','${item.jumpType }','${item.url }')">
 					<a href="javascript:;">
 						<img class="mui-media-object mui-pull-left" src="${item.smallimg } ">
 						<div class="mui-media-body" style="white-space:nowrap;text-overflow:ellipsis;text-align:left">
@@ -168,9 +168,7 @@
 			slider.slider({
 				interval: 5000
 			});
-			function jumpDetail(id){
-				window.location.href='${contextpath}/tingwenDetail.htm?id='+id;
-			}
+			 
 			function jumpTingwen(secondMenuId){
 				window.location.href="${contextpath}/tingwen.htm?secondMenuId="+secondMenuId;
 			}
