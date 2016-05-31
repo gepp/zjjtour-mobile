@@ -68,7 +68,7 @@ public class XiuxianController extends BaseController {
              newsList=dalClient.queryForObjectList("select * from security_news where  review_status=1 and menu_id in (select id from security_menu where  parent_id=1058) order by orderlist asc ,ctime desc");
          }
         setAttr("thirdShowName", thirdShowName);
-        SecurityNews securityNews=dalClient.queryForObject("select * from security_news where menu_id="+secondMenuId+" and review_status=1  order by orderlist asc,ctime desc",SecurityNews.class);
+        SecurityNews securityNews=dalClient.queryForObject("select * from security_news where menu_id="+secondMenuId+"",SecurityNews.class);
 		setAttr("securityNews", securityNews);
         return "/xiuxian" ;
     }
