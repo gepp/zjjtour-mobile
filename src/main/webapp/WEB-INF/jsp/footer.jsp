@@ -24,6 +24,6 @@
 					</a>
 				</li>
 			</ul>
-			<div class="copyright">版权所有：张家界市人民政府<br />湘ICP备15001419号-2<br /></div>
+			<div class="copyright">版权所有：张家界市人民政府<br />湘公网安备 43080202000109号  <br /></div>
 		</div>
 </html>

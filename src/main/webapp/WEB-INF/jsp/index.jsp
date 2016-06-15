@@ -132,7 +132,7 @@
 				<c:forEach items="${quanjingList }" var="quanjing">
 				<li class="mui-table-view-cell mui-media mui-col-xs-6">
 					<a href="javascript:void(0)"  onclick="jumpQuanjingDetail('${quanjing.id}')">
-						<img class="mui-media-object" src="${quanjing.indeximg }">
+						<img class="mui-media-object" src="${quanjing.indeximg }-quanjingindex">
 						<div class="mui-media-body">${quanjing.title }</div>
 					</a>
 				</li>
@@ -161,7 +161,7 @@
 						<img class="mui-media-object mui-pull-left" src="${meishiMenu.img }-wxxindex">
 						<div class="mui-media-body">
 							${meishiMenu.name }
-							<p class="mui-ellipsis">${meishiMenu.description }</p>
+							<p class="mui-ellipsis-2">${meishiMenu.description }</p>
 						</div>
 					</a>
 				</li>
@@ -170,7 +170,7 @@
 						<img class="mui-media-object mui-pull-left" src="${jiudianMenu.img }-wxxindex">
 						<div class="mui-media-body">
 							${jiudianMenu.name }
-							<p class="mui-ellipsis">${jiudianMenu.description }</p>
+							<p class="mui-ellipsis-2">${jiudianMenu.description }</p>
 						</div>
 					</a>
 				</li>
@@ -179,7 +179,7 @@
 						<img class="mui-media-object mui-pull-left" src="${jingdianMenu.img }-wxxindex">
 						<div class="mui-media-body">
 							${jingdianMenu.name }
-							<p class="mui-ellipsis">${jingdianMenu.description }</p>
+							<p class="mui-ellipsis-2">${jingdianMenu.description }</p>
 						</div>
 					</a>
 				</li>
@@ -188,7 +188,7 @@
 						<img class="mui-media-object mui-pull-left" src="${menpiaoMenu.img }-wxxindex">
 						<div class="mui-media-body">
 							${menpiaoMenu.name }
-							<p class="mui-ellipsis">${menpiaoMenu.description}</p>
+							<p class="mui-ellipsis-2">${menpiaoMenu.description}</p>
 						</div>
 					</a>
 				</li>

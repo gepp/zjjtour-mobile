@@ -1,6 +1,7 @@
 package com.jdk2010.index.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.jdk2010.base.security.securitynews.service.ISecurityNewsService;
 import com.jdk2010.framework.constant.Constants;
 import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.dal.client.DalClient;
+import com.jdk2010.framework.util.DateUtil;
 import com.jdk2010.framework.util.DbKit;
 import com.jdk2010.framework.util.HttpUtil;
 import com.jdk2010.framework.util.JsonUtil;
@@ -113,7 +115,7 @@ public class OtherController extends BaseController {
 					"select * from security_news where menu_id="+secondMenuId);	
 		}
 		Page pagePage = getPage();
-		pagePage.setPageSize(1000);
+		pagePage.setPageSize(5);
 		Page pageList = dalClient.queryForPageList(dbKit, pagePage,
 				SecurityNews.class);
 		setAttr("pageList", pageList);
@@ -131,6 +133,63 @@ public class OtherController extends BaseController {
 		return null;
 		
 		
+	}
+	
+	
+	@RequestMapping("/otherGetMore")
+	public void otherGetMore(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String secondMenuId = getPara("secondMenuId");
+		if (StringUtil.isBlank(secondMenuId)) {
+			secondMenuId = "";
+		}
+		String currentId = getPara("currentId");
+		if (StringUtil.isBlank(currentId)) {
+			currentId = "";
+		}
+		List<SecurityMenu> bqMenuList = dalClient.queryForObjectList(
+				"select * from security_menu where banner_id=" + secondMenuId
+						+ " order by orderlist asc", SecurityMenu.class);
+		setAttr("bqMenuList", bqMenuList);
+
+		if (currentId == null || currentId == "") {
+			if (bqMenuList != null && bqMenuList.size() != 0) {
+				if (bqMenuList != null && bqMenuList.size() > 0) {
+					currentId = bqMenuList.get(0).getId() + "";
+				}
+			} else {
+				currentId = "";
+			}
+
+		}
+		setAttr("currentId", currentId);
+		if (currentId.equals("")) {
+			currentId = "0";
+		}
+		DbKit dbKit=null;
+		if(bqMenuList.size()!=0){
+		dbKit= new DbKit(
+				"select * from security_news where id in (select news_id from bq_news where bq_id="
+						+ currentId + ") order by orderlist asc");
+		}else{
+			dbKit= new DbKit(
+					"select * from security_news where menu_id="+secondMenuId);	
+		}
+		Page pagePage = getPage();
+		pagePage.setPageSize(5);
+		Page pageList = dalClient.queryForPageList(dbKit, pagePage);
+		for(int i=0;i<pageList.getList().size();i++){
+			Map<String,Object> map=(Map<String, Object>) pageList.getList().get(i);
+			map.put("ctime", DateUtil.formatDateTime((Date)map.get("ctime"),"yyyy-MM-dd"));
+			if(map.get("url")==null){
+				map.put("url", "");
+			}
+			if(map.get("abstract_content")==null){
+				map.put("abstract_content","");
+			}
+		}
+		
+		renderJson(response, JsonUtil.toJson(pageList));
 	}
 
 	@RequestMapping("/otherDetail")

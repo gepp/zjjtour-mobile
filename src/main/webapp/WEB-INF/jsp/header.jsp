@@ -3,12 +3,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
-		<div id="middlePopover" class="mui-popover" style="height: 270px;">
+		<div id="middlePopover" class="mui-popover" style="height: 350px;">
 			<div class="mui-popover-arrow"></div>
 			<div class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 					<ul class="mui-table-view">
-						<li class="mui-table-view-cell" onclick="window.location.href='${contextpath}/'"><a class="mui-navigate-right" href="#">首页</a></li>
+						<li class="mui-table-view-cell" onclick="window.location.href='${contextpath}/'"><a class="mui-navigate-right" href="#">首页</a>
+						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">${shipin.name }</a>
+						<ul class="mui-table-view mui-table-view-chevron">
+								<c:forEach var="shipin"  items="${shipinMenuList }">
+								<li class="mui-table-view-cell" onclick="jumpShipin('${shipin.id}')"><a class="mui-navigate-right" href="#">${shipin.name }</a>
+								</li>
+								 </c:forEach>
+							</ul>
+						</li>
 						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">${quanjing.name }</a>
 							<ul class="mui-table-view mui-table-view-chevron">
 								<c:forEach var="menu"  items="${quanjingMenuList }">
@@ -46,20 +54,24 @@
 								 </c:forEach>
 							</ul>
 						</li>
-						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath }/about.htm?secondMenuId=1118'"><a class="mui-navigate-right" href="#">会员中心</a>
-						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/tousu.htm'"><a class="mui-navigate-right" href="#">投诉中心</a>
-						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/chengxin.htm'"><a class="mui-navigate-right" href="#">诚信中心</a>
-						</li>
 						<c:forEach var="newMap" items="${newsMap }">
+						<c:if test="${newMap.key.id !='1010'}"> 
 						<li class="mui-table-view-cell mui-collapse"><a class="mui-navigate-right" href="#">${newMap.key.name }</a>
 							<ul class="mui-table-view mui-table-view-chevron">
 								<c:forEach var="menu"  items="${newMap.value }">
+								
 								<li class="mui-table-view-cell"  onclick="jumpOther('${menu.id}','${newMap.key.id }');"><a class="mui-navigate-right" href="#">${menu.name }</a>
 								</li>
+								
 								 </c:forEach>
 							</ul>
 						</li>
+						</c:if>	
 						</c:forEach>
+						<li class="mui-table-view-cell " onclick="window.location.href='${contextpath}/tousu.htm'"><a class="mui-navigate-right" href="#">投诉中心</a>
+						</li>
+						<li class="mui-table-view-cell " onclick="window.location.href='http://buy.zjji.com/webwx/1/index'"><a class="mui-navigate-right" href="#">商城</a>
+						</li>
 						
 					</ul>
 				</div>
@@ -103,6 +115,9 @@
 		function jumpOther(secondMenuId,otherId){
 			var currentId="";
 			window.location.href="${contextpath}/other.htm?currentId="+currentId+"&otherId="+otherId+'&secondMenuId='+secondMenuId;
+		}
+		function jumpShipin(secondMenuId){
+			window.location.href="${contextpath}/shipin.htm?secondMenuId="+secondMenuId;
 		}
 		
 		</script>

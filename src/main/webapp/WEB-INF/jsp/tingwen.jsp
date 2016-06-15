@@ -51,11 +51,10 @@
 			<h1 class="mui-title">${thirdShowName }</h1>
 			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" style="margin: 0 -10px 0 0;" href="#middlePopover"></a>
 		</header>
+		<input type="hidden" value="${secondMenuId}" id="secondMenuId" />
 		<div class="mui-content">
 			<div class="mui-content-padded">
-				<div class="mui-btn <c:if test="${secondMenuId==''}"> mui-btn-primary</c:if> "  onclick="jumpTingwen('')">
-					全部
-				</div>
+			 
 			<c:forEach var="menu" items="${secondMenuList }">
 				<div class="mui-btn <c:if test="${secondMenuId==menu.id}"> mui-btn-primary</c:if>" onclick="jumpTingwen('${menu.id}')">
 				${menu.name }
@@ -64,9 +63,8 @@
 			</div>
 			<ul class="mui-table-view" id="changeSpan">
 				<c:forEach items="${pageList.list }" var="item">
-				<li class="mui-table-view-cell mui-media" onclick="jumpDetail('${tingwen.id}','${tingwen.jumpType }','${tingwen.url }')">
+				<li class="mui-table-view-cell mui-media" onclick="jumpTingwenDetail('${item.id}','${item.jumpType }','${item.url }')">
 					<a href="javascript:;">
-						<img class="mui-media-object mui-pull-left" src="${item.smallimg } ">
 						<div class="mui-media-body" style="white-space:nowrap;text-overflow:ellipsis;text-align:left">
 							${item.title }
 							<p class="mui-ellipsis">${item.abstractContent }</p>
@@ -76,7 +74,13 @@
 					</a>
 				</li>
 				</c:forEach>
+				<div id="moreLi"></div>
+				<button id="moreBtn" type="button"
+				class="mui-btn mui-btn-block mui-btn-radius" style="margin: 0;"
+				onclick="getMore()">加载更多</button>
 			</ul>
+			<button id="noBtn" style="display: none; margin-left: 0px"
+			type="button" class="mui-btn mui-btn-block mui-btn-radius">没有数据了...</button>
 			<ul class="mui-table-view leader"  id="lingdaozhichuang" style="display:none">
 				<c:forEach var="lingdao" items="${lingdaoList }">
 				<li class="mui-table-view-cell mui-media" onclick="gotoLingdao('${lingdao.id}')">
@@ -98,6 +102,7 @@
 	</body>
 	<script src="${contextpath}/js/mui.min.js"></script>
 	<script src="${contextpath}/js/jquery.min.js"></script>
+	<script src="${contextpath}/js/common.js"></script>
 	<script>
 	String.prototype.endWith=function(s){ 
 		if(s==null||s==""||this.length==0||s.length>this.length) 
@@ -129,7 +134,7 @@
 	function gotoLingdao(id){
 		window.location.href='${contextpath}/lingdaoDetail.htm?id='+id;
 	}
-	function jumpDetail(id,jumpType,url){
+	function jumpTingwenDetail(id,jumpType,url){
 		if(url==''){
 			if(jumpType=='0'){
 				window.open('${contextpath}/tingwenDetail.htm?id='+id);
@@ -168,11 +173,44 @@
 			slider.slider({
 				interval: 5000
 			});
-			function jumpDetail(id){
-				window.location.href='${contextpath}/tingwenDetail.htm?id='+id;
-			}
+		 
 			function jumpTingwen(secondMenuId){
 				window.location.href="${contextpath}/tingwen.htm?secondMenuId="+secondMenuId;
+			}
+			
+			var pageIndex=1;
+			function getMore(){
+				pageIndex++;
+				$.ajax({
+					type: "post", 
+					url: "${contextpath}/tingwenGetMore.htm?secondMenuId="+$("#secondMenuId").val()+"&pageIndex="+pageIndex, 
+					dataType: "json",
+					success: function (data) { 
+						 var jsonArray=str2json(data);
+						 console.log(jsonArray.list.length);
+						 if(jsonArray.list.length==0){
+							 $("#moreBtn").hide();
+							 $("#noBtn").show();
+						 }else{
+							 var strLis="";
+							 for(var i=0;i<jsonArray.list.length;i++){
+								 var item=jsonArray.list[i];
+								 console.log(item);
+							 var strLi='<li class="mui-table-view-cell mui-media"  '+
+									   'onclick="jumpTingwenDetail(\''+item.id+'\',\''+item.jump_type+'\',\''+item.url+'\')">'
+									   +'<a href="javascript:;">'+
+									'<div class="mui-media-body" style="white-space: nowrap; text-overflow: ellipsis;text-align:left">'+
+									''+item.title+''+'<p class="mui-ellipsis">'+item.abstract_content+'</p>'+
+									'<p class="mui-ellipsis">'+item.ctime+
+									'&nbsp;&nbsp;<span class="number"><i class="iconfont">&#xe616;</i>'+item.readtotal+'</span>'+
+									'</p></div></a></li>';
+							 strLis=strLis+strLi;
+							 }
+							 $("#moreLi").append(strLis);
+						 
+					 }
+					} 
+			});
 			}
 		</script>
 

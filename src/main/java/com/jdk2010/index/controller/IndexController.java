@@ -1,6 +1,7 @@
 package com.jdk2010.index.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,10 @@ import com.jdk2010.base.security.securitynews.service.ISecurityNewsService;
 import com.jdk2010.framework.constant.Constants;
 import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.dal.client.DalClient;
+import com.jdk2010.framework.util.DateUtil;
+import com.jdk2010.framework.util.DbKit;
 import com.jdk2010.framework.util.JsonUtil;
+import com.jdk2010.framework.util.Page;
 import com.jdk2010.framework.util.ReturnData;
 import com.jdk2010.framework.util.StringUtil;
 import com.jdk2010.member.memberactivity.model.MemberActivity;
@@ -65,28 +69,30 @@ public class IndexController extends BaseController {
 						SystemAdv.class);
 		setAttr("advList", advList);
 
-		List<SecurityMenu> quanjingMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1011 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> quanjingMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1011 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("quanjingMenuList", quanjingMenuList);
 
-		List<SecurityMenu> changyouMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1010 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> changyouMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1010 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("changyouMenuList", changyouMenuList);
 
-		List<SecurityMenu> tingwenMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1037 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> tingwenMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1037 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("tingwenMenuList", tingwenMenuList);
 
-		List<SecurityMenu> xiuxianMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1058 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> xiuxianMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1058 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("xiuxianMenuList", xiuxianMenuList);
 
-		
-		
 		Map<String, Object> indexMap = dalClient
 				.queryForObject("select * from system_indexsetting");
 		setAttr("indexMap", indexMap);
@@ -105,8 +111,6 @@ public class IndexController extends BaseController {
 						SecurityNews.class);
 		setAttr("quanjingList", quanjingList);
 
-		
-		
 		// 畅游
 		List<SecurityNews> changyouList = dalClient
 				.queryForObjectList(
@@ -114,8 +118,6 @@ public class IndexController extends BaseController {
 						SecurityNews.class);
 		setAttr("changyouList", changyouList);
 
-		
-		
 		// 活动
 		List<MemberActivity> activityList = dalClient
 				.queryForObjectList(
@@ -123,8 +125,6 @@ public class IndexController extends BaseController {
 						MemberActivity.class);
 		setAttr("activityList", activityList);
 
-	
-		
 		// 听闻管理
 		List<SecurityNews> tingwenList = dalClient
 				.queryForObjectList(
@@ -132,8 +132,6 @@ public class IndexController extends BaseController {
 						SecurityNews.class);
 		setAttr("tingwenList", tingwenList);
 
-	
-		
 		SecurityMenu meishiMenu = dalClient
 				.queryForObject("select * from security_menu where id=1091",
 						SecurityMenu.class);
@@ -153,16 +151,36 @@ public class IndexController extends BaseController {
 				.queryForObject("select * from security_menu where id=1095",
 						SecurityMenu.class);
 		setAttr("menpiaoMenu", menpiaoMenu);
-		SecurityMenu xiuxian=dalClient.queryForObject("select * from security_menu where id=1058 order by orderlist asc",SecurityMenu.class);
-		setAttr("xiuxian",xiuxian);
-		SecurityMenu quanjing=dalClient.queryForObject("select * from security_menu where id=1011 order by orderlist asc",SecurityMenu.class);
-		setAttr("quanjing",quanjing);
-		SecurityMenu changyou=dalClient.queryForObject("select * from security_menu where id=1010 order by orderlist asc",SecurityMenu.class);
-		setAttr("changyou",changyou);
-		SecurityMenu activity=dalClient.queryForObject("select * from security_menu where id=1050 order by orderlist asc",SecurityMenu.class);
-		setAttr("activity",activity);
-		SecurityMenu tingwen=dalClient.queryForObject("select * from security_menu where id=1037 order by orderlist asc",SecurityMenu.class);
-		setAttr("tingwen",tingwen);
+		SecurityMenu xiuxian = dalClient
+				.queryForObject(
+						"select * from security_menu where id=1058 order by orderlist asc",
+						SecurityMenu.class);
+		setAttr("xiuxian", xiuxian);
+		SecurityMenu quanjing = dalClient
+				.queryForObject(
+						"select * from security_menu where id=1011 order by orderlist asc",
+						SecurityMenu.class);
+		setAttr("quanjing", quanjing);
+		SecurityMenu changyou = dalClient
+				.queryForObject(
+						"select * from security_menu where id=1010 order by orderlist asc",
+						SecurityMenu.class);
+		setAttr("changyou", changyou);
+		SecurityMenu activity = dalClient
+				.queryForObject(
+						"select * from security_menu where id=1050 order by orderlist asc",
+						SecurityMenu.class);
+		setAttr("activity", activity);
+		SecurityMenu tingwen = dalClient
+				.queryForObject(
+						"select * from security_menu where id=1037 order by orderlist asc",
+						SecurityMenu.class);
+		setAttr("tingwen", tingwen);
+	 
+		
+		
+		
+		
 		return "/index";
 	}
 
@@ -170,24 +188,28 @@ public class IndexController extends BaseController {
 	public String header(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		List<SecurityMenu> quanjingMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1011 and status=1 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> quanjingMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1011 and status=1 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("quanjingMenuList", quanjingMenuList);
 
-		List<SecurityMenu> changyouMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1010 and status=1 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> changyouMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1010 and status=1 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("changyouMenuList", changyouMenuList);
 
-		List<SecurityMenu> tingwenMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1037 and status=1 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> tingwenMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1037 and status=1 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("tingwenMenuList", tingwenMenuList);
 
-		List<SecurityMenu> xiuxianMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1058 and status=1 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> xiuxianMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1058 and status=1 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("xiuxianMenuList", xiuxianMenuList);
 
 		Map<String, Object> indexMap = dalClient
@@ -197,31 +219,54 @@ public class IndexController extends BaseController {
 		String type = getPara("type");
 		setAttr("type", type);
 
-		List<SecurityMenu> otherNewsMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=0 and page_type=1 and  status=1 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> otherNewsMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=0 and page_type=1 and  status=1 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("otherNewsMenuList", otherNewsMenuList);
 
-		Map<Object,Object> newsMap=new LinkedHashMap<Object, Object>();
-		for(SecurityMenu menu:otherNewsMenuList){
-			List<SecurityMenu> secondMenuList = dalClient.queryForObjectList(
-					"select * from security_menu where parent_id="+menu.getId()+" and page_type=1 and status=1 order by orderlist asc",
-					SecurityMenu.class);
+		Map<Object, Object> newsMap = new LinkedHashMap<Object, Object>();
+		for (SecurityMenu menu : otherNewsMenuList) {
+			List<SecurityMenu> secondMenuList = dalClient
+					.queryForObjectList(
+							"select * from security_menu where parent_id="
+									+ menu.getId()
+									+ " and page_type=1 and status=1 order by orderlist asc",
+							SecurityMenu.class);
 			newsMap.put(menu, secondMenuList);
 		}
-		SecurityMenu xiuxian=dalClient.queryForObject("select * from security_menu where id=1058",SecurityMenu.class);
-		setAttr("xiuxian",xiuxian);
-		SecurityMenu quanjing=dalClient.queryForObject("select * from security_menu where id=1011",SecurityMenu.class);
-		setAttr("quanjing",quanjing);
-		SecurityMenu changyou=dalClient.queryForObject("select * from security_menu where id=1010",SecurityMenu.class);
-		setAttr("changyou",changyou);
-		SecurityMenu activity=dalClient.queryForObject("select * from security_menu where id=1050",SecurityMenu.class);
-		setAttr("activity",activity);
-		SecurityMenu tingwen=dalClient.queryForObject("select * from security_menu where id=1037",SecurityMenu.class);
-		setAttr("tingwen",tingwen);
-		
+		SecurityMenu xiuxian = dalClient
+				.queryForObject("select * from security_menu where id=1058",
+						SecurityMenu.class);
+		setAttr("xiuxian", xiuxian);
+		SecurityMenu quanjing = dalClient
+				.queryForObject("select * from security_menu where id=1011",
+						SecurityMenu.class);
+		setAttr("quanjing", quanjing);
+		SecurityMenu changyou = dalClient
+				.queryForObject("select * from security_menu where id=1010",
+						SecurityMenu.class);
+		setAttr("changyou", changyou);
+		SecurityMenu activity = dalClient
+				.queryForObject("select * from security_menu where id=1050",
+						SecurityMenu.class);
+		setAttr("activity", activity);
+		SecurityMenu tingwen = dalClient
+				.queryForObject("select * from security_menu where id=1037",
+						SecurityMenu.class);
+		setAttr("tingwen", tingwen);
+
 		setAttr("newsMap", newsMap);
- 
+		
+		SecurityMenu shipin = dalClient
+				.queryForObject("select * from security_menu where id=1133",
+						SecurityMenu.class);
+		setAttr("shipin", shipin);
+		
+		List<SecurityMenu> shipinMenuList = dalClient.queryForObjectList(
+				"select * from security_menu where parent_id=1133 order by orderlist asc",
+				SecurityMenu.class);
+		setAttr("shipinMenuList", shipinMenuList);
 
 		return "/header";
 	}
@@ -395,17 +440,18 @@ public class IndexController extends BaseController {
 			// cemail = "";
 			String cheadimgurl = getPara("memberImage1");
 			if (StringUtil.isNotBlank(cheadimgurl)) {
-				
-				String path = request.getRealPath("/")+"headimg/";
-				String type=cheadimgurl.split(",")[0].split(";")[0].split("/")[1];
-				String imgName = UUID.randomUUID().toString()+"."+type;
-				com.jdk2010.util.ImageUtils.decodeBase64ToImage(cheadimgurl.split(",")[1],
-						path, imgName);
-				System.out.println("path + imgName:"+path + imgName);
-				System.out.println("cheadimgurl:"+cheadimgurl);
-				//cheadimgurl = QiniuUtil.upload(path + imgName);
-				cheadimgurl ="/headimg/" + imgName;
-				System.out.println("cheadimgurl:---"+cheadimgurl);
+
+				String path = request.getRealPath("/") + "headimg/";
+				String type = cheadimgurl.split(",")[0].split(";")[0]
+						.split("/")[1];
+				String imgName = UUID.randomUUID().toString() + "." + type;
+				com.jdk2010.util.ImageUtils.decodeBase64ToImage(
+						cheadimgurl.split(",")[1], path, imgName);
+				System.out.println("path + imgName:" + path + imgName);
+				System.out.println("cheadimgurl:" + cheadimgurl);
+				// cheadimgurl = QiniuUtil.upload(path + imgName);
+				cheadimgurl = "/headimg/" + imgName;
+				System.out.println("cheadimgurl:---" + cheadimgurl);
 			}
 			// cheadimgurl = "";
 			String returnMsg = ZjjMsgUtil.updateMember(id, cnickname, cname,
@@ -424,19 +470,22 @@ public class IndexController extends BaseController {
 	@RequestMapping("/quanjing")
 	public String quanjing(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		List<SecurityMenu> quanjingMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1011 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> quanjingMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1011 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("quanjingMenuList", quanjingMenuList);
 
-		List<SecurityMenu> changyouMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1010 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> changyouMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1010 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("changyouMenuList", changyouMenuList);
 
-		List<SecurityMenu> tingwenMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1037 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> tingwenMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1037 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("tingwenMenuList", tingwenMenuList);
 
 		Map<String, Object> indexMap = dalClient
@@ -449,9 +498,10 @@ public class IndexController extends BaseController {
 		setAttr("quanjing", menu);
 		// 全景的二级目录
 
-		List<SecurityMenu> secondMenuList = dalClient.queryForObjectList(
-				"select * from security_menu where parent_id=1011 order by orderlist asc",
-				SecurityMenu.class);
+		List<SecurityMenu> secondMenuList = dalClient
+				.queryForObjectList(
+						"select * from security_menu where parent_id=1011 order by orderlist asc",
+						SecurityMenu.class);
 		setAttr("secondMenuList", secondMenuList);
 
 		String secondMenuId = getPara("secondMenuId");
@@ -475,22 +525,88 @@ public class IndexController extends BaseController {
 		setAttr("currentId", currentId);
 
 		// 全景的新闻
-		List<Map<String, Object>> newsList;
-		if (currentId == "") {
-			newsList = new ArrayList<Map<String, Object>>();
-		} else {
-			newsList = dalClient
-					.queryForObjectList("select * from security_news where id in (select news_id from bq_news where bq_id="
-							+ currentId + ")");
+		List<Map<String, Object>> newsList = new ArrayList<Map<String, Object>>();
+		for (int i = 0; i < bqMenuList.size(); i++) {
+			DbKit dbKit = new DbKit(
+					"select * from security_news where id in (select news_id from bq_news where bq_id="
+							+ bqMenuList.get(i).getId()
+							+ ") order by orderlist asc");
+			List<Map<String, Object>> tempNews = dalClient
+					.queryForObjectList(dbKit);
+			newsList.addAll(tempNews);
 		}
-		
+		List<Map<String, Object>> returnnewsList = new ArrayList<Map<String, Object>>();
+		if (newsList.size() > 5) {
+			for (int i = 0; i < 5; i++) {
+				returnnewsList.add(newsList.get(i));
+			}
+		} else {
+			returnnewsList = newsList;
+		}
+
 		SecurityMenu secondMen = dalClient.queryForObject(
 				"select * from security_menu where id=" + secondMenuId,
 				SecurityMenu.class);
 		setAttr("secondMen", secondMen);
 
-		setAttr("quanjingList", newsList);
+		setAttr("quanjingList", returnnewsList);
 		return "/quanjing";
+	}
+
+	@RequestMapping("/quanjingGetMore")
+	public void tousuJson(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String secondMenuId = getPara("secondMenuId");
+		if (StringUtil.isBlank(secondMenuId)) {
+			secondMenuId = "";
+		}
+
+		// 全景的标签list
+		List<SecurityMenu> bqMenuList = dalClient.queryForObjectList(
+				"select * from security_menu where banner_id=" + secondMenuId
+						+ " order by orderlist asc", SecurityMenu.class);
+
+		// 全景的新闻
+		List<Map<String, Object>> newsList = new ArrayList<Map<String, Object>>();
+		for (int i = 0; i < bqMenuList.size(); i++) {
+			DbKit dbKit = new DbKit(
+					"select * from security_news where id in (select news_id from bq_news where bq_id="
+							+ bqMenuList.get(i).getId()
+							+ ") order by orderlist asc");
+			List<Map<String, Object>> tempNews = dalClient
+					.queryForObjectList(dbKit);
+			newsList.addAll(tempNews);
+		}
+		List<Map<String, Object>> returnnewsList = new ArrayList<Map<String, Object>>();
+		int pageIndex = getParaToInt("pageIndex");
+		int pageBefore = (pageIndex - 1) * 5;
+		int pageTotal = pageIndex * 5;
+		if (pageTotal <= newsList.size()) {
+			for (int i = pageBefore; i < pageBefore + 5; i++) {
+				returnnewsList.add(newsList.get(i));
+			}
+		} else {
+			for (int i = pageBefore; i < newsList.size(); i++) {
+				returnnewsList.add(newsList.get(i));
+			}
+		}
+
+		Page pageList = new Page();
+		pageList.setList(returnnewsList);
+		for (int i = 0; i < pageList.getList().size(); i++) {
+			Map<String, Object> map = (Map<String, Object>) pageList.getList()
+					.get(i);
+			map.put("ctime", DateUtil.formatDateTime((Date) map.get("ctime"),
+					"yyyy-MM-dd"));
+			if (map.get("url") == null) {
+				map.put("url", "");
+			}
+			if(map.get("abstract_content")==null){
+				map.put("abstract_content","");
+			}
+		}
+
+		renderJson(response, JsonUtil.toJson(pageList));
 	}
 
 	@RequestMapping("/quanjingDetail")

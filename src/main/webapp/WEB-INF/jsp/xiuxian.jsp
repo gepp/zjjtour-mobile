@@ -14,7 +14,6 @@
 		<!--标准mui.css-->
 		<link rel="stylesheet" href="${contextpath}/css/mui.min.css">
 		<!--App自定义的css-->
-		<link rel="stylesheet" type="text/css" href="${contextpath}/css/app.css" />
 		<style>
 			h5 {
 				padding-top: 8px;

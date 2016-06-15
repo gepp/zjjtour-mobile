@@ -1,6 +1,7 @@
 package com.jdk2010.index.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,9 @@ import com.jdk2010.base.security.securitynews.model.SecurityNews;
 import com.jdk2010.base.security.securitynews.service.ISecurityNewsService;
 import com.jdk2010.framework.controller.BaseController;
 import com.jdk2010.framework.dal.client.DalClient;
+import com.jdk2010.framework.util.DateUtil;
 import com.jdk2010.framework.util.DbKit;
+import com.jdk2010.framework.util.JsonUtil;
 import com.jdk2010.framework.util.Page;
 import com.jdk2010.framework.util.StringUtil;
 import com.jdk2010.member.memberactivity.model.MemberActivity;
@@ -84,7 +87,7 @@ public class TingwenController extends BaseController {
         setAttr("thirdShowName", thirdShowName);
          
         Page pagePage = getPage();
-		pagePage.setPageSize(6);
+		pagePage.setPageSize(5);
 		Page pageList = dalClient.queryForPageList(dbKit, pagePage,
 				SecurityNews.class);
 		setAttr("pageList", pageList);
@@ -97,6 +100,41 @@ public class TingwenController extends BaseController {
 		
         return "/tingwen" ;
     }
+    
+    @RequestMapping("/tingwenGetMore")
+	public void tousuJson(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String secondMenuId = getPara("secondMenuId");
+		if (StringUtil.isBlank(secondMenuId)) {
+			secondMenuId = "";
+		}
+		Page pagePage = getPage();
+		pagePage.setPageSize(5);
+		Page pageList = null;
+		if (secondMenuId != "") {
+			pageList = dalClient.queryForPageList(
+					"select * from security_news where menu_id=" + secondMenuId
+							+ " and review_status=1 order by orderlist asc  ",
+					pagePage);
+		} else {
+			pageList = dalClient
+					.queryForPageList(
+							"select * from security_news where  review_status=1 and menu_id in (select id from security_menu where  parent_id=1037) order by orderlist asc,ctime desc ",
+							pagePage);
+		}
+		for(int i=0;i<pageList.getList().size();i++){
+			Map<String,Object> map=(Map<String, Object>) pageList.getList().get(i);
+			map.put("ctime", DateUtil.formatDateTime((Date)map.get("ctime"),"yyyy-MM-dd"));
+			if(map.get("url")==null){
+				map.put("url", "");
+			}
+			if(map.get("abstract_content")==null){
+				map.put("abstract_content","");
+			}
+		}
+		
+		renderJson(response, JsonUtil.toJson(pageList));
+	}
     
     @RequestMapping("/tingwenDetail")
     public String quanjingDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
