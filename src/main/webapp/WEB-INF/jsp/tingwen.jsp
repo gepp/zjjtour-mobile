@@ -63,7 +63,9 @@
 			</div>
 			<ul class="mui-table-view" id="changeSpan">
 				<c:forEach items="${pageList.list }" var="item">
+ 
 				<li class="mui-table-view-cell mui-media" onclick="jumpTingwenDetail('${item.id}','${item.jumpType }','${item.url }')">
+
 					<a href="javascript:;">
 						<div class="mui-media-body" style="white-space:nowrap;text-overflow:ellipsis;text-align:left">
 							${item.title }
@@ -173,7 +175,7 @@
 			slider.slider({
 				interval: 5000
 			});
-		 
+ 
 			function jumpTingwen(secondMenuId){
 				window.location.href="${contextpath}/tingwen.htm?secondMenuId="+secondMenuId;
 			}

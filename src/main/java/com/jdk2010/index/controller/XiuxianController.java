@@ -69,6 +69,7 @@ public class XiuxianController extends BaseController {
          }
         setAttr("thirdShowName", thirdShowName);
         SecurityNews securityNews=dalClient.queryForObject("select * from security_news where menu_id="+secondMenuId+"   order by orderlist asc,ctime desc",SecurityNews.class);
+ 
 		setAttr("securityNews", securityNews);
         return "/xiuxian" ;
     }
